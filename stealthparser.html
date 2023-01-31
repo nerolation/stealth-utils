@@ -2,7 +2,24 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Simple Input App</title>
+
+ <title>Stealth-Utils</title>
+ <meta name="description" content="Tools supporting adoption of Stealth Addresses (EIP-5564).">
+
+ <!-- Facebook Meta Tags -->
+ <meta property="og:url" content=https://tornado-warning.info/>
+ <meta property="og:type" content="website">
+ <meta property="og:title" content="Stealth-Utils">
+ <meta property="og:description" content="Tools supporting adoption of Stealth Addresses (EIP-5564).">
+ <meta property="og:image" content=https://toniwahrstaetter.com/favicon.png>
+
+ <!-- Twitter Meta Tags -->
+ <meta name="twitter:card" content="summary_large_image">
+ <meta property="twitter:domain" content="tornado-warning.info">
+ <meta property="twitter:url" content=https://tornado-warning.info/>
+ <meta name="twitter:title" content="Stealth-Utils">
+ <meta name="twitter:description" content="Tools supporting adoption of Stealth Addresses (EIP-5564).">
+ <meta name="twitter:image" content=https://toniwahrstaetter.com/favicon.png>
   <style>
   form {
     display: flex;
@@ -27,7 +44,6 @@
     height: 40px;
     font-size: 18px;
     background-color: lightblue;
-    color: white;
     margin-top: 20px;
     width: 50%;
     margin-left: auto;
@@ -75,8 +91,9 @@
   cursor: pointer;
 }
 body {
-  display:flex; flex-direction:column; justify-content:center;
+  display:flex; flex-direction:column;
   min-height:100vh;
+  background-color: #585858;
 }
 
 </style>
@@ -100,17 +117,20 @@ body {
 </head>
 <body>
   <body>
-    <h2 style="text-align: center;">Generate Stealth Address</h2>
+    <h1 style="text-align: center;color:#ffffff;">Stealth-utils</h1>
+
+    <h2 style="text-align: center;color:#ffffff;">Generate Stealth Address</h2>
     <!-- The text field -->
-    <input type="text" value="st:eth:0x03312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b16603312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b166" id="stealthSample">
+    <input style="height:10px;font-size:14px;" type="text" value="st:eth:0x03312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b16603312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b166" id="stealthSample">
     <!-- The button used to copy the text -->
-    <button onclick="copyText()">Copy address</button>
+    <button onclick="copyText()">Copy stealth meta-address</button>
     <form id="input-form-1">
-      <input type="text" id="input-field-1">
-      <button type="submit">Submit</button>
+      <input type="text" id="input-field-1" placeholder="st:eth:0x...">
+      <button type="submit">Generate Stealth Address</button>
     </form>
     <br><br>
-    <h2 style="text-align: center;">Find My Stealth Addresses</h2>
+    <br><br>
+    <!--<h2 style="text-align: center;color:#ffffff;">Find My Stealth Addresses (not implemented)</h2>
     <form id="input-form-2">
       <input type="text" id="input-field-2">
       <button type="submit">Submit</button>
@@ -118,8 +138,7 @@ body {
     <div id="announcement-1">
     </div>
     <div id="announcement-2">
-    </div>
-    <button id="myBtn">Open Modal</button>
+    </div>-->
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -154,7 +173,6 @@ body {
 
       document.querySelector('#input-form-1').addEventListener('submit', function(e) {
         e.preventDefault();
-        document.querySelector('#announcement-1').innerHTML = 'Loading...';
         var inputField = document.querySelector('#input-field-1');
         var data = {'text': inputField.value};
         console.log(data);
@@ -167,10 +185,12 @@ body {
           document.getElementById("modaltext3").innerHTML = "View Tag: " + stealthAddressInfo["ViewTag"];
           modal.style.display = "block";
         } catch (error) {
-          document.querySelector('#announcement-1').innerHTML = 'Request failed. Please try again.';
+          var modal = document.getElementById("myModal");
+          document.getElementById("modaltext1").innerHTML = "Address generation failed.";
+          modal.style.display = "block";
           }
       });
-      document.querySelector('#input-form-2').addEventListener('submit', function(e) {
+      /*document.querySelector('#input-form-2').addEventListener('submit', function(e) {
         e.preventDefault();
         document.querySelector('#announcement-2').innerHTML = 'Loading...';
         var inputField = document.querySelector('#input-field-2');
@@ -200,7 +220,7 @@ body {
           clearTimeout(timeout);
           document.querySelector('#announcement-1').innerHTML = 'Request failed. Please try again.';
         });
-});
+      });*/
   </script>
 </body>
 
