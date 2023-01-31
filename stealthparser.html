@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Input App</title>
+  <style>
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  input[type="text"] {
+    width: 80%;
+    height: 40px;
+    font-size: 18px;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  button {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  button[type="submit"] {
+    height: 40px;
+    font-size: 18px;
+    background-color: lightblue;
+    color: white;
+    margin-top: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #announcement {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+  /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+body {
+  display:flex; flex-direction:column; justify-content:center;
+  min-height:100vh;
+}
+
+</style>
+<script src="bundle.js", type="text/javascript"></script>
+<script type="text/javascript">
+    function copyText() {
+    // Get the text field
+    var copyText = document.getElementById("stealthSample");
+
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+
+     // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
+
+    // Alert the copied text
+    alert("Copied the text: " + copyText.value);
+    }
+</script>
+</head>
+<body>
+  <body>
+    <h2 style="text-align: center;">Generate Stealth Address</h2>
+    <!-- The text field -->
+    <input type="text" value="st:eth:0x03312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b16603312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b166" id="stealthSample">
+    <!-- The button used to copy the text -->
+    <button onclick="copyText()">Copy address</button>
+    <form id="input-form-1">
+      <input type="text" id="input-field-1">
+      <button type="submit">Submit</button>
+    </form>
+    <br><br>
+    <h2 style="text-align: center;">Find My Stealth Addresses</h2>
+    <form id="input-form-2">
+      <input type="text" id="input-field-2">
+      <button type="submit">Submit</button>
+    </form>
+    <div id="announcement-1">
+    </div>
+    <div id="announcement-2">
+    </div>
+    <button id="myBtn">Open Modal</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modaltext1"></p>
+        <p id="modaltext2"></p>
+        <p id="modaltext3"></p>
+      </div>
+
+    </div>
+    <script>
+      window.addEventListener("load", (event) => {
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        modal.style.display = "none";
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+      // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+        });
+
+      document.querySelector('#input-form-1').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.querySelector('#announcement-1').innerHTML = 'Loading...';
+        var inputField = document.querySelector('#input-field-1');
+        var data = {'text': inputField.value};
+        console.log(data);
+        try {
+          var stealthAddressInfo = generateStealthInfo(data["text"]);
+          console.log(stealthAddressInfo)
+          var modal = document.getElementById("myModal");
+          document.getElementById("modaltext1").innerHTML = "Stealth Address: " + stealthAddressInfo["stealthAddress"];
+          document.getElementById("modaltext2").innerHTML = "Ephemeral Public Key: " + stealthAddressInfo["ephemeralPublicKey"];
+          document.getElementById("modaltext3").innerHTML = "View Tag: " + stealthAddressInfo["ViewTag"];
+          modal.style.display = "block";
+        } catch (error) {
+          document.querySelector('#announcement-1').innerHTML = 'Request failed. Please try again.';
+          }
+      });
+      document.querySelector('#input-form-2').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.querySelector('#announcement-2').innerHTML = 'Loading...';
+        var inputField = document.querySelector('#input-field-2');
+        var data = {'text': inputField.value};
+        var timeout = setTimeout(function() {
+          document.querySelector('#announcement-2').innerHTML = 'Request timed out. Please try again.';
+        }, 30000);
+        fetch('/getstealthaddress-2', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(function(response) {
+          clearTimeout(timeout);
+          return response.json();
+        })
+        .then(function(data) {
+          if (data.result) {
+            document.querySelector('#announcement-1').innerHTML = data.announcement;
+          } else {
+            document.querySelector('#announcement-1').innerHTML = 'No announcement found';
+          }
+        })
+        .catch(function(error) {
+          clearTimeout(timeout);
+          document.querySelector('#announcement-1').innerHTML = 'Request failed. Please try again.';
+        });
+});
+  </script>
+</body>
+
+</html>
