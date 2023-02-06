@@ -25,7 +25,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
   }
   input[type="text"] {
     width: 80%;
@@ -96,6 +95,94 @@ body {
   background-color: #585858;
 }
 
+.code-block {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  padding: 5px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.code-block code {
+  font-family: monospace;
+  font-size: 16px;
+}
+hr {
+  width: 100%;
+}
+
+/* Add styles for header */
+header {
+  display: flex;
+  justify-content: center;
+  background-color: lightgray;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+/* Add styles for tabs */
+.tab {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+/* Add styles for active tab */
+.active {
+  background-color: gray;
+  color: white;
+}
+/* Add styles for main content */
+.main {
+  padding-top: 80px;
+  text-align: center;
+}
+
+#tabdiv {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 40px;
+}
+
+#maintext {
+  font-size: 18px;
+  color: white;
+}
+
+/* Add styles for the tutorial steps */
+.step {
+ background-color: white;
+ border: 1px solid lightgray;
+ padding: 20px;
+ margin-bottom: 10px;
+ margin-top: 10px;
+ box-shadow: 2px 2px 8px gray;
+ transition: all 0.3s;
+}
+
+/* Add styles for when the user hovers over a tutorial step */
+.step:hover {
+ transform: translateY(-5px);
+ box-shadow: 2px 2px 15px gray;
+}
+
+/* Add styles for the tutorial images */
+.step img {
+ width: 100%;
+ height: auto;
+ margin-bottom: 20px;
+ margin-top: 20px;
+}
+
+/* Add styles for the tutorial descriptions */
+.step p {
+ font-size: 18px;
+ line-height: 1.5;
+ margin-bottom: 0;
+}
+
 </style>
 <script src="bundle.js", type="text/javascript"></script>
 <script type="text/javascript">
@@ -117,28 +204,135 @@ body {
 </head>
 <body>
   <body>
+    <div id="tabdiv" class="landingTab" style="display:block">
     <h1 style="text-align: center;color:#ffffff;">Stealth-utils</h1>
+    <p id="maintext">The website offers tools for utilizing stealth addresses on the Ethereum network. These stealth addresses allow for increased anonymity in transactions, boosting privacy for recipients.
+      The first tab provides a simple tutorial on how to use this website. On the next tab, you can generate a stealth address for the owner
+      of a stealth meta-address. The third tab enables you to search for accessible stealth addresses.
+      Lastly, the forth tab gives you the ability to obtain the private key for one of your stealth addresses.
+      </p>
+      <h3 style="font-size: 24px;font-weight: bold;margin-bottom: 20px;padding-top:20px;color:white;">How to use stealth addresses?</h3>
+      <div class="step">
+        <p><span style="font-weight: bold;">1. Get the stealth meta-address of the recipient.</span><br>The stealth-meta-address is starting with "st:eth:0x..." and typically 130 bytes in size. <br>
+       </p>
+        <img src="stealthmetaaddress.png" alt="Step 1">
+        <p>It may incorporate 2 different public keys (that can be compressed to 65 bytes),
+        the spending and the viewing public key, that can then be used by users to send fund to the stealth address of the respective user.<br>
+        When generating a stealth address, you also receive the ephemeral public key that is nedded in the next step.</p>
+      </div>
+      <div class="step">
+        <p><span style="font-weight: bold;">2. Stealth Interaction. </span><br>Take the generated stealth address and use it just like any Ethereum account.
+        You can send funds to the stealth address, trusting that the recipient will be able to derive the private key that can access those funds.<br>
+        As soon as you've interacted with a stealth address, make sure to emit the announcement (containing your ephemeral public key) as an event log to
+        enable the recipient access the respective stealth address.</p>
+      </div>
+      <div class="step">
+        <p><span style="font-weight: bold;">3. Stealth Address Parsing. </span><br>In order to find out if someone has transferred funds to your stealth address, you have to use your viewing private
+          key together with every emitted announcement to check if the respective stealth address transaction went to a stealth address that you can access.<br>
+          If there has been a stealth transaction with you as the recipient, the site will provide you with a value that,
+          when added to your spending private key, results in the stealth private key.</p>
+      </div>
+      <div class="step">
+        <p><span style="font-weight: bold;">4. Stealth Private Key Derivation. </span><br>Finally, compute the stealth private key within a secure environment.<br>Best, use a device that has
+          never been connected to the web and that you trust to not be compromised. Since you need your spending private key, the funds are at risk in case of any compromises.
+          The steath private key can then used, just like any other private key, to sign transaction from the stealth address.
+      </div>
+  </div>
 
-    <h2 style="text-align: center;color:#ffffff;">Generate Stealth Address</h2>
-    <!-- The text field -->
-    <input style="height:10px;font-size:14px;" type="text" value="st:eth:0x03312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b16603312f36039e1479d10ba17eef98bba5f9a299af277c1dfac2e9134f352892b166" id="stealthSample">
-    <!-- The button used to copy the text -->
-    <button onclick="copyText()">Copy stealth meta-address</button>
-    <form id="input-form-1">
-      <input type="text" id="input-field-1" placeholder="st:eth:0x...">
-      <button type="submit">Generate Stealth Address</button>
-    </form>
-    <br><br>
-    <br><br>
-    <!--<h2 style="text-align: center;color:#ffffff;">Find My Stealth Addresses (not implemented)</h2>
+    <header>
+      <div class="tab active" id="tab1">Stealth-utils</div>
+      <div class="tab" id="tab2">Generate Stealth Address</div>
+      <div class="tab" id="tab3">Parse for Stealth Address</div>
+      <div class="tab" id="tab4">Derive Private Key</div>
+    </header>
+
+    <script>
+      // Get all tabs    <div id="tabdiv" class="generateTab" style="display:none">
+
+      var tabs = document.querySelectorAll(".tab");
+
+      // Get main content
+      var main = document.querySelector(".main");
+      // Add click event listener to all tabs
+      tabs.forEach(function(tab) {
+        tab.addEventListener("click", function() {
+
+          var tabdivs = document.querySelectorAll("#tabdiv");
+          tabdivs.forEach(function(tab) {
+                  tab.style.display = "none";
+                });
+          // Remove active class from all tabs
+          tabs.forEach(function(tab) {
+            tab.classList.remove("active");
+          });
+          // Add active class to clicked tab
+          this.classList.add("active");
+          // Change content of main section based on clicked tab
+          if (this.id === "tab2") {
+            var tab = document.querySelector(".generateTab");
+            tab.style.display = "block";
+          } else if (this.id === "tab3") {
+            var tab = document.querySelector(".parseTab");
+            tab.style.display = "block";
+          } else if (this.id === "tab4") {
+            var tab = document.querySelector(".derivekeyTab");
+            tab.style.display = "block";
+          } else if (this.id === "tab1") {
+            var tab = document.querySelector(".landingTab");
+            tab.style.display = "block";
+          }
+        });
+      });
+    </script>
+    <div id="tabdiv" class="generateTab" style="display:none">
+      <h2 style="text-align: center;color:#ffffff;">Generate Stealth Address</h2>
+      <!-- The text field -->
+      <!-- <input style="height:10px;font-size:14px;" type="text" value="st:eth:0x02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b" id="stealthSample"> -->
+      <!-- The button used to copy the text -->
+      <!-- <button style="margin-top: 10px;margin-bottom: 40px;" onclick="copyText()">Copy stealth meta-address</button>  -->
+      <form id="input-form-1">
+        <input type="text" id="input-field-1" placeholder="st:eth:0x..." value="st:eth:0x02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b">
+        <button type="submit">Generate Stealth Address</button>
+      </form>
+    </div>
+
+    <div id="tabdiv" class="parseTab" style="display:none">
+    <h2 style="text-align: center;color:#ffffff;">Find My Stealth Addresses</h2>
     <form id="input-form-2">
-      <input type="text" id="input-field-2">
+      <input type="text" id="input-field-2" placeholder="Spending Public Key: 0x..." value="0x02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b">
+      <input type="text" id="input-field-3" placeholder="Viewing Private Key: 0x..." value="0x5ae07d3818695379db1e82a684e1be374b5c4dc40dc8a754adf45cdcb9a4d784">
       <button type="submit">Submit</button>
     </form>
+  </div>
+
     <div id="announcement-1">
     </div>
     <div id="announcement-2">
-    </div>-->
+    </div>
+    <div id="tabdiv" class="derivekeyTab" style="display:none">
+    <h2 style="text-align: center;color:#ffffff;">Get My Stealth Private Key</h2>
+    <h4 style="text-align: center;color:#ffffff;">Either use Python on your local machine like this:</h4>
+    <div class="code-block">
+      <pre>
+        <code class="python"><br>#Python example to derive the stealth private key<br><span style='color:red;'>spendingPrivateKey</span> = "<Your spending private key>"</br><span style='color:red;'>sharedSecret</span> = "<Your shared secret>"<br><span style='color:red;'>stealthPrivateKey</span> = <span style='color:blue;'>int</span>(spendingPrivateKey, 16) + <span style='color:blue;'>int</span>(sharedSecret, 16)<br>hex(p_stealth)
+        </code>
+      </pre>
+    </div>
+    <br><br>
+    <h4 style="text-align: center;color:#ffffff;">Or trust this site and paste your shared secret together with your spending private key in the
+      following fields (please be cautious when entering such sensitive information on a website. It is important to note that a compromised shared secret could result in loss of privacy,
+      while the spending key grants access to your
+      funds on the stealth address. To ensure the safety of your information, it is not recommended to enter your private key on any unfamiliar/untrusted website. The derivation of
+      the stealth private key can be done manually and without any backend operations, as shown in the source code. Additionally, the entered information is never
+      recorded or logged by any backend or analytics software. You can also choose to download and run the site locally without any internet connection for added security.:</h4>
+
+    <h2 style="text-align: center;color:#ffffff;">Derive Private Key (can be run offline)</h2>
+    <form id="input-form-3">
+      <input type="text" id="input-field-31" placeholder="Shared Secret: 0x..." value="0x6ab33099bbe9ae0a2f9dc7151f521b17282e9218797070311a47b896121756a9">
+      <input type="text" id="input-field-32" placeholder="Spending Private Key: 0x..." value="0x5ae07d3818695379db1e82a684e1be374b5c4dc40dc8a754adf45cdcb9a4d784">
+      <button type="submit">Submit</button>
+    </form>
+    </div>
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -190,38 +384,111 @@ body {
           modal.style.display = "block";
           }
       });
-      /*document.querySelector('#input-form-2').addEventListener('submit', function(e) {
+
+
+
+      document.querySelector('#input-form-2').addEventListener('submit', function(e) {
         e.preventDefault();
+        var modal = document.getElementById("myModal");
+        document.getElementById("modaltext1").innerHTML = "";
+        document.getElementById("modaltext2").innerHTML = "Loading...";
+        document.getElementById("modaltext3").innerHTML = "";
+        modal.style.display = "block";
         document.querySelector('#announcement-2').innerHTML = 'Loading...';
-        var inputField = document.querySelector('#input-field-2');
-        var data = {'text': inputField.value};
-        var timeout = setTimeout(function() {
-          document.querySelector('#announcement-2').innerHTML = 'Request timed out. Please try again.';
-        }, 30000);
-        fetch('/getstealthaddress-2', {
-          method: 'POST',
+        const timeout = 30 * 1000; // 30 seconds in milliseconds
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        setTimeout(() => {
+          controller.abort();
+        }, timeout);
+
+        fetch('http://localhost:5000/parse', {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          signal: signal
         })
-        .then(function(response) {
-          clearTimeout(timeout);
-          return response.json();
-        })
-        .then(function(data) {
-          if (data.result) {
-            document.querySelector('#announcement-1').innerHTML = data.announcement;
-          } else {
-            document.querySelector('#announcement-1').innerHTML = 'No announcement found';
-          }
-        })
-        .catch(function(error) {
-          clearTimeout(timeout);
-          document.querySelector('#announcement-1').innerHTML = 'Request failed. Please try again.';
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then(json => {
+            // Access arrays in the response JSON object
+            console.log(json.array1[0]);
+            for (var i=0; i<json.array1.length;i++) {
+              var announcement = json.array1[i];
+              var viewingPublicKey = document.querySelector('#input-field-2').value;
+              var spendingPrivateKey = document.querySelector('#input-field-3').value;
+              //console.log(announcement);
+              //console.log(viewingPublicKey);
+              //console.log(spendingPrivateKey);
+              var stealthInfo = parseStealthAddresses(announcement[0], announcement[1], viewingPublicKey, spendingPrivateKey);
+              if (stealthInfo === false) {
+                continue;
+              }
+              var stealthAddress = stealthInfo[0];
+              var ephemeralPublicKey = stealthInfo[1];
+              var hashedSharedSecret = stealthInfo[2];
+              console.log("stealthAddress:", stealthAddress);
+              console.log("ephemeralPublicKey:", ephemeralPublicKey);
+              console.log("hashedSharedSecret:", hashedSharedSecret);
+              var modal = document.getElementById("myModal");
+              document.getElementById("modaltext1").innerHTML = "Stealth Address: " + stealthAddress;
+              document.getElementById("modaltext2").innerHTML = "Ephemeral Public Key: " + ephemeralPublicKey;
+              document.getElementById("modaltext3").innerHTML = "Hashed Shared Secret: " + hashedSharedSecret;
+              modal.style.display = "block";
+            }
+          })
+          .catch(error => {
+            if (error.name === 'AbortError') {
+              document.querySelector('#announcement-2').innerHTML = 'Request timed out. Please try again.';
+              console.error('Request timed out');
+            } else {
+              document.querySelector('#announcement-2').innerHTML = 'Request timed out. Please try again.';
+              console.error(error);
+            }
+          });
+
+
+
         });
-      });*/
+        document.querySelector('#input-form-3').addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          var sharedSecret = BigInt(document.querySelector('#input-field-31').value);
+          console.log("sharedSecret: ", sharedSecret);
+          console.log("sharedSecret: ", sharedSecret.toString(16));
+
+          var spendingPrivateKey = BigInt(document.querySelector('#input-field-32').value);
+          var stealthPrivateKey = sharedSecret+spendingPrivateKey;
+          console.log("stealthPrivateKey: ",stealthPrivateKey);
+
+          var stealthAddress = privToAddress(stealthPrivateKey);
+          console.log(stealthAddress);
+
+          try {
+
+            var modal = document.getElementById("myModal");
+            document.getElementById("modaltext1").innerHTML = "Stealth Address: " + stealthAddress;
+            document.getElementById("modaltext2").innerHTML = "stealth Private Key: 0x" + stealthPrivateKey.toString(16);
+            document.getElementById("modaltext3").innerHTML = "";
+            modal.style.display = "block";
+          } catch (error) {
+            var modal = document.getElementById("myModal");
+            document.getElementById("modaltext1").innerHTML = "Address generation failed.";
+            document.getElementById("modaltext2").innerHTML = "";
+            document.getElementById("modaltext3").innerHTML = "";
+            modal.style.display = "block";
+            }
+        });
   </script>
+  <br><br>
+  <br><br>
 </body>
 
 </html>
