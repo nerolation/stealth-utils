@@ -1,10 +1,13 @@
 const keccak256 = require('js-sha3').keccak256;
-const secp = require('noble-secp256k1');
-
+const secp = require("@noble/secp256k1");
 
 function randomPrivateKey() {
   var randPrivateKey = secp.utils.randomPrivateKey();
   return BigInt(`0x${Buffer.from(randPrivateKey, "hex").toString('hex')}`);
+}
+
+function uintArrayToHex(uintArray) {
+  return secp.utils.bytesToHex(uintArray);
 }
 
 function toEthAddress(PublicKey) {
@@ -36,7 +39,6 @@ global.generateStealthInfo = function generateStealthInfo(stealthMetaAddress) {
   const sharedSecret = secp.getSharedSecret(ephemeralPrivateKey, R_pubkey_view);
   console.log('sharedSecret:', sharedSecret);
 
-  //const Qh = await secp.utils.sha256(Q);
   var hashedSharedSecret = keccak256(Buffer.from(sharedSecret.slice(2)));
   console.log('hashedSharedSecret:', hashedSharedSecret);
 
@@ -50,7 +52,7 @@ global.generateStealthInfo = function generateStealthInfo(stealthMetaAddress) {
   console.log('stealth address:', stealthAddress);
   return {"stealthAddress":stealthAddress, "ephemeralPublicKey":"0x"+Buffer.from(ephemeralPublicKey).toString('hex'), "ViewTag":"0x"+ViewTag.toString('hex')};
 }
-console.log("generateStealthInfo......................");
+//console.log("generateStealthInfo......................");
 //var info = generateStealthInfo("st:eth:0x02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b");
 
 
@@ -105,6 +107,17 @@ global.privToAddress = function privToAddress(
   return  stealthPublicKey.toHex(isCompressed=true), stealthAddress;
 }
 
+global.generateRandomStealthMetaAddress = function generateRandomStealthMetaAddress() {
+  const spendingPrivateKey = randomPrivateKey();
+  const viewingPrivateKey = randomPrivateKey();
+  const spendingPublicKey = uintArrayToHex(secp.getPublicKey(spendingPrivateKey, isCompressed=true));
+  const viewingPublicKey = uintArrayToHex(secp.getPublicKey(viewingPrivateKey, isCompressed=true));
+  const stealthMetaAddress = "st:eth:0x"+spendingPublicKey+viewingPublicKey;
+  return ["0x"+spendingPrivateKey.toString(16), "0x"+viewingPrivateKey.toString(16), stealthMetaAddress]
+
+
+}
+//generateRandomStealthMetaAddress();
 //var stealthPrivateKey = BigInt("0x"+success[2]) + BigInt("0x5ae07d3818695379db1e82a684e1be374b5c4dc40dc8a754adf45cdcb9a4d784");
 
 //stealthAddress_derived = privToAddress(stealthPrivateKey);

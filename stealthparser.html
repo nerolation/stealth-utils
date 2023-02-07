@@ -28,7 +28,6 @@
   }
   input[type="text"] {
     width: 80%;
-    height: 40px;
     font-size: 18px;
     padding: 10px;
     margin-left: auto;
@@ -40,7 +39,6 @@
     margin-right: auto;
   }
   button[type="submit"] {
-    height: 40px;
     font-size: 18px;
     background-color: lightblue;
     margin-top: 20px;
@@ -102,11 +100,12 @@ body {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  overflow: scroll;
 }
 
 .code-block code {
   font-family: monospace;
-  font-size: 16px;
+  font-size: 15px;
 }
 hr {
   width: 100%;
@@ -140,15 +139,19 @@ header {
 }
 
 #tabdiv {
-  width: 80%;
+  width: 60%;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 40px;
+  padding-top: 10vh;
 }
 
 #maintext {
   font-size: 18px;
   color: white;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 /* Add styles for the tutorial steps */
@@ -206,44 +209,60 @@ header {
   <body>
     <div id="tabdiv" class="landingTab" style="display:block">
     <h1 style="text-align: center;color:#ffffff;">Stealth-utils</h1>
-    <p id="maintext">The website offers tools for utilizing stealth addresses on the Ethereum network. These stealth addresses allow for increased anonymity in transactions, boosting privacy for recipients.
-      The first tab provides a simple tutorial on how to use this website. On the next tab, you can generate a stealth address for the owner
-      of a stealth meta-address. The third tab enables you to search for accessible stealth addresses.
-      Lastly, the forth tab gives you the ability to obtain the private key for one of your stealth addresses.
+    <p id="maintext">The website offers tools for utilizing stealth addresses on the Ethereum network.
+      These stealth addresses allow for increased anonymity in transactions, boosting privacy for recipients.<br>
+
+      <ul style="color:white;font-size:18px;">
+      <li>The first tab provides a simple tutorial on how to use this website.</li>
+      <li>The second tab allows you to generate your own stealth-meta address.</li>
+      <li>On the next tab, you can generate a stealth address for the owner of a stealth meta-address.</li>
+      <li>The third tab enables you to search for accessible stealth addresses.</li>
+      <li>Lastly, the forth tab gives you the ability to obtain the private key for one of your stealth addresses.</li>
+    </ul>
       </p>
       <h3 style="font-size: 24px;font-weight: bold;margin-bottom: 20px;padding-top:20px;color:white;">How to use stealth addresses?</h3>
       <div class="step">
         <p><span style="font-weight: bold;">1. Get the stealth meta-address of the recipient.</span><br>The stealth-meta-address is starting with "st:eth:0x..." and typically 130 bytes in size. <br>
-       </p>
+       </p style="font-size:18px;">
         <img src="stealthmetaaddress.png" alt="Step 1">
-        <p>It may incorporate 2 different public keys (that can be compressed to 65 bytes),
-        the spending and the viewing public key, that can then be used by users to send fund to the stealth address of the respective user.<br>
-        When generating a stealth address, you also receive the ephemeral public key that is nedded in the next step.</p>
+        <p>The stealth meta-address consitsts of <span style="font-weight: bold;">two different public keys</span> (that can be compressed to 65 bytes),
+        the <span style="font-weight: bold;">spending</span> and the <span style="font-weight: bold;">viewing public key</span>,
+        which are used by senders to send funds to the stealth address of the respective user.</p>
+        <ul style="font-size:18px;">
+        <li>The stealth meta-address can be publicly shared and used by others to generate stealth addresses on behalf of the owner.</li>
+        <li>The stealth meta-address does not reveal any information about future stealth addresses that are generated on behalf of the owner.</li>
+        <li>The corresponding private keys must be kept private. Only the viewing key can be shared with trusted third parties.</li>
+        </ul>
+        <p><span style="font-weight: bold;">In general the viewing key secures your privacy while the spending key secures access to funds.<br></span>
+        When generating a stealth address for another user, you also receive the ephemeral public key that is needed in the next step.</p>
       </div>
       <div class="step">
         <p><span style="font-weight: bold;">2. Stealth Interaction. </span><br>Take the generated stealth address and use it just like any Ethereum account.
         You can send funds to the stealth address, trusting that the recipient will be able to derive the private key that can access those funds.<br>
         As soon as you've interacted with a stealth address, make sure to emit the announcement (containing your ephemeral public key) as an event log to
-        enable the recipient access the respective stealth address.</p>
+        allow the recipient to use that information in order to access the respective stealth address.</p>
       </div>
       <div class="step">
         <p><span style="font-weight: bold;">3. Stealth Address Parsing. </span><br>In order to find out if someone has transferred funds to your stealth address, you have to use your viewing private
-          key together with every emitted announcement to check if the respective stealth address transaction went to a stealth address that you can access.<br>
+          key together with every emitted announcement to check if the respective transaction went to a stealth address that you can access.<br>
           If there has been a stealth transaction with you as the recipient, the site will provide you with a value that,
-          when added to your spending private key, results in the stealth private key.</p>
+          when added to your spending private key, results in the stealth private key that can access the stealth address.</p>
       </div>
       <div class="step">
         <p><span style="font-weight: bold;">4. Stealth Private Key Derivation. </span><br>Finally, compute the stealth private key within a secure environment.<br>Best, use a device that has
-          never been connected to the web and that you trust to not be compromised. Since you need your spending private key, the funds are at risk in case of any compromises.
-          The steath private key can then used, just like any other private key, to sign transaction from the stealth address.
+          never been connected to the Internet and that you trust to not be compromised. Since you need your spending private key, the funds are at risk in case of any compromises.
+          The steath private key can then used, just like any other private key. You can import the stealth private key into your browser wallet application (e.g. Metamask)
+          and directly forward any funds to a secure cold wallet.
+          Notably, as soon as the stealth private key is copied/imported into a browser wallet it becomes "hot" wallet and it should then, after forwarding the funds, no longer be used.
       </div>
   </div>
 
     <header>
       <div class="tab active" id="tab1">Stealth-utils</div>
-      <div class="tab" id="tab2">Generate Stealth Address</div>
-      <div class="tab" id="tab3">Parse for Stealth Address</div>
-      <div class="tab" id="tab4">Derive Private Key</div>
+      <div class="tab" id="tab2">Generate Stealth Meta-Address</div>
+      <div class="tab" id="tab3">Generate Stealth Address</div>
+      <div class="tab" id="tab4">Parse for Stealth Address</div>
+      <div class="tab" id="tab5">Derive Private Key</div>
     </header>
 
     <script>
@@ -269,12 +288,15 @@ header {
           this.classList.add("active");
           // Change content of main section based on clicked tab
           if (this.id === "tab2") {
-            var tab = document.querySelector(".generateTab");
+            var tab = document.querySelector(".genstealthmetaTab");
             tab.style.display = "block";
           } else if (this.id === "tab3") {
-            var tab = document.querySelector(".parseTab");
+            var tab = document.querySelector(".generateTab");
             tab.style.display = "block";
           } else if (this.id === "tab4") {
+            var tab = document.querySelector(".parseTab");
+            tab.style.display = "block";
+          } else if (this.id === "tab5") {
             var tab = document.querySelector(".derivekeyTab");
             tab.style.display = "block";
           } else if (this.id === "tab1") {
@@ -284,6 +306,13 @@ header {
         });
       });
     </script>
+
+    <div id="tabdiv" class="genstealthmetaTab" style="display:none">
+      <h2 style="text-align: center;color:#ffffff;">Generate Stealth Meta-Address</h2>
+      <form id="input-form-11">
+        <button type="submit">Generate Stealth Meta-Address</button>
+      </form>
+    </div>
     <div id="tabdiv" class="generateTab" style="display:none">
       <h2 style="text-align: center;color:#ffffff;">Generate Stealth Address</h2>
       <!-- The text field -->
@@ -340,9 +369,9 @@ header {
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
-        <p id="modaltext1"></p>
-        <p id="modaltext2"></p>
-        <p id="modaltext3"></p>
+        <div style='overflow:auto;'><p id="modaltext1"></p></div>
+        <div style='overflow:auto;'><p id="modaltext2"></p></div>
+        <div style='overflow:auto;'><p id="modaltext3"></p></div>
       </div>
 
     </div>
@@ -363,6 +392,24 @@ header {
             modal.style.display = "none";
           }
         }
+        });
+
+        document.querySelector('#input-form-11').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var inputField = document.querySelector('#input-field-11');
+          try {
+            var stealthInfo = generateRandomStealthMetaAddress();
+            console.log(stealthInfo)
+            var modal = document.getElementById("myModal");
+            document.getElementById("modaltext1").innerHTML = "Stealth Meta-Address: " + stealthInfo[2];
+            document.getElementById("modaltext2").innerHTML = "Spending Private Key: " + stealthInfo[0];
+            document.getElementById("modaltext3").innerHTML = "Viewing Private Key: " + stealthInfo[1];
+            modal.style.display = "block";
+          } catch (error) {
+            var modal = document.getElementById("myModal");
+            document.getElementById("modaltext1").innerHTML = "Stealth Meta-Address generation failed.";
+            modal.style.display = "block";
+            }
         });
 
       document.querySelector('#input-form-1').addEventListener('submit', function(e) {
@@ -394,7 +441,7 @@ header {
         document.getElementById("modaltext2").innerHTML = "Loading...";
         document.getElementById("modaltext3").innerHTML = "";
         modal.style.display = "block";
-        document.querySelector('#announcement-2').innerHTML = 'Loading...';
+        document.querySelector('#announcement-2').innerHTML = '';
         const timeout = 30 * 1000; // 30 seconds in milliseconds
 
         const controller = new AbortController();
@@ -466,6 +513,7 @@ header {
 
           var spendingPrivateKey = BigInt(document.querySelector('#input-field-32').value);
           var stealthPrivateKey = sharedSecret+spendingPrivateKey;
+          var stealthPrivateKey = stealthPrivateKey % BigInt(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141); //secp256k1 order
           console.log("stealthPrivateKey: ",stealthPrivateKey);
 
           var stealthAddress = privToAddress(stealthPrivateKey);
