@@ -54,7 +54,7 @@ nav {
           <button type="submit">Generate</button>
         </form>
         <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined.<br>
-          The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet.</p>
+          The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://chainlist.org/>chainlist.org</a>).</p>
         <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
         <textarea id="stealthmetaaddressinfo" rows="2" style="width:70%;max-width:900px;display:none"></textarea>
         <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses.</p>
@@ -74,9 +74,9 @@ nav {
           We have Alice, who wants to send funds to the stealth address of Bob.</p>
         <ul>
         <li>Alice take the stealth meta-address of Bob and inputs it into some EIP-5564 compatible interface.</li>
-        <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Beacon`.</li>
-        <li>Alice can then send funds to the derived stealth address and publishes the additional information retrieved. Beacon so that Bob knows that he received some funds to his stealth address.</li>
-        <li>The Beacon is published so that Bob knows that he received some funds to his stealth address. The View Tag will allow Bob to speed up the parsing process to find his stealth address.</li>
+        <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Announcement`.</li>
+        <li>Alice can then send funds to the derived stealth address and publishes the additional information retrieved. Announcement so that Bob knows that he received some funds to his stealth address.</li>
+        <li>The Announcement is published so that Bob knows that he received some funds to his stealth address. The View Tag will allow Bob to speed up the parsing process to find his stealth address.</li>
         <li>This can be done in a single transaction.
         </ul>
         </div>
@@ -86,8 +86,8 @@ nav {
           <button type="submit">Get Info</button>
         </form>
         <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:900px;display:none"></textarea>
-        <p>Head over to Etherscan and use the contract on this address to send ETH and publish the Beacon within the same transaction.<br>
-          The contract just forwards any ETH while passing the Beacon to another contract that publishes it. </p>
+        <p>Head over to Etherscan and use the contract on this address to send ETH and publish the Announcement within the same transaction.<br>
+          The contract just forwards any ETH while passing the Announcement to another contract that publishes it. </p>
           <p>⚠️ Only use it on Goerli testnet ⚠️</p>
       </section>
       <br>
@@ -96,13 +96,13 @@ nav {
       <section id="example">
         <h2>How do I know that someone sent to a stealth address that I can access?</h2>
         <div>
-        <p><span style="font-weight: bold;">Parsing.</span> You have to go trough all Beacons and check if the respecitive Beacon,
+        <p><span style="font-weight: bold;">Parsing.</span> You have to go trough all Announcements and check if the respecitive Announcement,
           applied to your viewing private key, can unlock a valid stealth address.<br>
 
       While the <span style="font-weight: bold;">viewing private key</span> is used to find your stealth address,
       the <span style="font-weight: bold;">spending private key</span> is used to access those funds.<br>
       Therefore, the <span style="font-weight: bold;">viewing private key</span> can be given to a trusted parsing-provider that takes over the pasing job.<br>
-          Finally, if successfully, the parsing provider returns the Beacon that can then be used, together with the spending private key, to access the stealth address.</p>
+          Finally, if successfully, the parsing provider returns the Announcement that can then be used, together with the spending private key, to access the stealth address.</p>
         </div>
         <p>You can try it out here. Input your spending public key and your viewing private key and let the service start parsing.</p>
         <form id="input-form-3">
@@ -163,7 +163,7 @@ nav {
           var outputField = document.querySelector('#stealthaddressinfo');
           outputField.style.display = "block";
           outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] +
-            "\nBeacon: " + stealthAddressInfo["ephemeralPublicKey"] + "\nView Tag: " + stealthAddressInfo["ViewTag"];
+            "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nView Tag: " + stealthAddressInfo["ViewTag"];
         });
 
         document.querySelector('#input-form-3').addEventListener('submit', function(e) {
@@ -232,12 +232,12 @@ nav {
       });
 
 
-      fetch('https://github.com/nerolation/stealth-beacons/main/data.csv')
+      fetch('https://github.com/nerolation/stealth-announcements/main/data.csv')
       .then(response => response.text())
       .then(data => {
         const rows = data.split('\n');
         const headers = rows[0].split(',');
-        const Beacons = [];
+        const Announcements = [];
 
         for (let i = 1; i < rows.length; i++) {
           const cells = rows[i].split(',');
@@ -247,10 +247,10 @@ nav {
             rowObject[headers[j]] = cells[j];
           }
 
-          Beacons.push(rowObject);
+          Announcements.push(rowObject);
         }
 
-        console.log(Beacons);
+        console.log(Announcements);
         })
         .catch(error => console.error(error));
       </script>
