@@ -75,9 +75,10 @@ nav {
         <ul>
         <li>Alice take the stealth meta-address of Bob and inputs it into some EIP-5564 compatible interface.</li>
         <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Announcement`.</li>
-        <li>Alice can then send funds to the derived stealth address and publishes the additional information retrieved. Announcement so that Bob knows that he received some funds to his stealth address.</li>
-        <li>The Announcement is published so that Bob knows that he received some funds to his stealth address. The View Tag will allow Bob to speed up the parsing process to find his stealth address.</li>
-        <li>This can be done in a single transaction.
+        <li>Alice can then send funds to the derived stealth address and publish the additional information retrieved. After that, she can be sure that Bob has every required information to find the stealth address and access it.
+          All of this can be done in the background, hidden from the user, giving the user the feeling of sending to a stealth meta-address using a single transaction.</li>
+        <li>The announcement is published so that Bob can use it to find the stealth address Alice sent to and then derive the private key that controlls that address. </li>
+        <li>The View Tag will allow Bob to speed up the parsing process to find his stealth address.
         </ul>
         </div>
         <p>You can try it out here. Input a stealth meta-address and get all the info necessary to then execute a transaction.</p>
@@ -96,13 +97,13 @@ nav {
       <section id="example">
         <h2>How do I know that someone sent to a stealth address that I can access?</h2>
         <div>
-        <p><span style="font-weight: bold;">Parsing.</span> You have to go trough all Announcements and check if the respecitive Announcement,
+        <p><span style="font-weight: bold;">Parsing.</span> You have to go trough all announcements and check if the respecitive announcement,
           applied to your viewing private key, can unlock a valid stealth address.<br>
 
       While the <span style="font-weight: bold;">viewing private key</span> is used to find your stealth address,
       the <span style="font-weight: bold;">spending private key</span> is used to access those funds.<br>
       Therefore, the <span style="font-weight: bold;">viewing private key</span> can be given to a trusted parsing-provider that takes over the pasing job.<br>
-          Finally, if successfully, the parsing provider returns the Announcement that can then be used, together with the spending private key, to access the stealth address.</p>
+          Finally, if successfully, the parsing provider returns the announcement that can then be used, together with the spending private key, to access the stealth address.</p>
         </div>
         <p>You can try it out here. Input your spending public key and your viewing private key and let the service start parsing.</p>
         <form id="input-form-3">
