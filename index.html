@@ -54,7 +54,7 @@ nav {
           <button type="submit">Generate</button>
         </form>
         <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined.<br>
-          The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://chainlist.org/>chainlist.org</a>).</p>
+          The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://eips.ethereum.org/EIPS/eip-3770>EIP-3770</a>).</p>
         <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
         <textarea id="stealthmetaaddressinfo" rows="4" style="width:70%;max-width:900px;display:none"></textarea>
         <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses.</p>
@@ -86,7 +86,7 @@ nav {
           <button type="submit">Get Info</button>
         </form>
         <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:900px;display:none"></textarea>
-        <p>Head over to Etherscan and use the contract on <a href="https://goerli.etherscan.io/address/0x3221583b6b07db582e0fbc73664db95275da29a6#writeContract">this</a> address to send ETH and publish the announcement.<br>
+        <p>Head over to Etherscan and use the contract on <a href=https://goerli.etherscan.io/address/0x3221583b6b07db582e0fbc73664db95275da29a6#writeContract>this</a> address to send ETH and publish the announcement.<br>
           The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
           <p>⚠️ Only use it on Goerli testnet ⚠️</p>
       </section>
