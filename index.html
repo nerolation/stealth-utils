@@ -56,7 +56,7 @@ nav {
         <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined.<br>
           The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://chainlist.org/>chainlist.org</a>).</p>
         <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
-        <textarea id="stealthmetaaddressinfo" rows="2" style="width:70%;max-width:900px;display:none"></textarea>
+        <textarea id="stealthmetaaddressinfo" rows="4" style="width:70%;max-width:900px;display:none"></textarea>
         <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses.</p>
 
 
@@ -86,8 +86,8 @@ nav {
           <button type="submit">Get Info</button>
         </form>
         <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:900px;display:none"></textarea>
-        <p>Head over to Etherscan and use the contract on this address to send ETH and publish the Announcement within the same transaction.<br>
-          The contract just forwards any ETH while passing the Announcement to another contract that publishes it. </p>
+        <p>Head over to Etherscan and use the contract on <a href="https://goerli.etherscan.io/address/0x3221583b6b07db582e0fbc73664db95275da29a6#writeContract">this</a> address to send ETH and publish the announcement.<br>
+          The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
           <p>⚠️ Only use it on Goerli testnet ⚠️</p>
       </section>
       <br>
@@ -110,9 +110,9 @@ nav {
           <input style="width:70%;max-width:900px;" placeholder="0x... (viewing private key)" type="text" id="viewpriv">
           <button type="submit">Parse</button>
         </form>
-        <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined.<br>
-          The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet.</p>
-          <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:900px;display:none;"></textarea>
+
+          <textarea id="secretinfo" rows="3" style="width:70%;max-width:900px;display:none;"></textarea>
+          <p id="psecretinfo" style="display:none;">The stealth secret can then be used to derive the private key that can access the funds on the stealth address <br>Essentially, all the recipient has to to is a simple addition: The recipient takes the spending private key and adds it to the stealth secret. </p>
 
       </section>
       <section id="faq">
@@ -127,8 +127,7 @@ nav {
       <section id="resources">
         <h2>Resources</h2>
         <ul>
-          <li><a href="https://en.wikipedia.org/wiki/Stealth_address">...</a></li>
-          <li><a href="https://github.com/monero-project/research-lab/blob/master/whitepaper/whitepaper.pdf">Monero Research Lab Whitepaper</a></li>
+          <li><a href="./">...</a></li>
         </ul>
       </section>
     </main>
@@ -147,12 +146,14 @@ nav {
           var inputField = document.querySelector('#stealthmetaoutput');
           var stealthInfo = generateRandomStealthMetaAddress();
           console.log(stealthInfo)
-          inputField.value = stealthInfo[2];
+          inputField.value = stealthInfo[4];
           outputField.style.display = "block";
           outputFieldText.style.display = "block";
           outputFieldText2.style.display = "block";
           outputField.value = "Spending Private Key: " + stealthInfo[0] +
-            "\nViewing Private Key: " + stealthInfo[1];
+            "\nViewing Private Key: " + stealthInfo[1] +
+            "\nSpending Public Key: " + stealthInfo[2] +
+            "\nViewing Public Key: " + stealthInfo[3];
 
         });
         document.querySelector('#input-form-2').addEventListener('submit', function(e) {
@@ -168,68 +169,44 @@ nav {
 
         document.querySelector('#input-form-3').addEventListener('submit', function(e) {
           e.preventDefault();
-          var spendingPub = document.querySelector('#spendpub');
-          var viewingPriv = document.querySelector('#viewpriv');
-          modal.style.display = "block";
-          const timeout = 30 * 1000; // 30 seconds in milliseconds
-          const controller = new AbortController();
-          const signal = controller.signal;
+          var spendingPub = document.querySelector('#spendpub').value;
+          var viewingPriv = document.querySelector('#viewpriv').value;
+          var outputField = document.querySelector('#secretinfo');
+          var outputFieldText = document.querySelector('#psecretinfo');
 
-          setTimeout(() => {
-            controller.abort();
-          }, timeout);
+          for (var i=0; i<window.announcements.length;i++) {
+            var announcement = window.announcements[i];
+            console.log("announcement[ephemeralPubKey]:", announcement["ephemeralPubKey"]);
+            console.log("announcement[stealthAddress]:", announcement["stealthAddress"]);
+            var stealthInfo = parseStealthAddresses(announcement["ephemeralPubKey"], announcement["stealthAddress"].toLowerCase(), spendingPub, viewingPriv);
+            console.log("-========================");
+            console.log(stealthInfo);
+            console.log("-========================");
+            window.foundStealthInfo = false;
+            if (stealthInfo === false) {
+              continue;
+            }
+            window.foundStealthInfo = true;
+            var stealthAddress = stealthInfo[0];
+            var ephemeralPublicKey = stealthInfo[1];
+            var hashedSharedSecret = stealthInfo[2];
 
-          fetch('http://localhost:5000/parse', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            signal: signal
-          })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error(response.statusText);
-              }
-              return response.json();
-            })
-            .then(json => {
-              // Access arrays in the response JSON object
-              console.log(json.array1[0]);
-              for (var i=0; i<json.array1.length;i++) {
-                var announcement = json.array1[i];
-                var viewingPublicKey = document.querySelector('#input-field-2').value;
-                var spendingPrivateKey = document.querySelector('#input-field-3').value;
-                //console.log(announcement);
-                //console.log(viewingPublicKey);
-                //console.log(spendingPrivateKey);
-                var stealthInfo = parseStealthAddresses(announcement[0], announcement[1], viewingPublicKey, spendingPrivateKey);
-                if (stealthInfo === false) {
-                  continue;
-                }
-                var stealthAddress = stealthInfo[0];
-                var ephemeralPublicKey = stealthInfo[1];
-                var hashedSharedSecret = stealthInfo[2];
-                console.log("stealthAddress:", stealthAddress);
-                console.log("ephemeralPublicKey:", ephemeralPublicKey);
-                console.log("hashedSharedSecret:", hashedSharedSecret);
-                var modal = document.getElementById("myModal");
-                document.getElementById("modaltext1").innerHTML = "Stealth Address: " + stealthAddress;
-                document.getElementById("modaltext2").innerHTML = "Ephemeral Public Key: " + ephemeralPublicKey;
-                document.getElementById("modaltext3").innerHTML = "Hashed Shared Secret: " + hashedSharedSecret;
-                modal.style.display = "block";
-              }
-            })
-            .catch(error => {
-              if (error.name === 'AbortError') {
-                document.querySelector('#announcement-2').innerHTML = 'Request timed out. Please try again.';
-                console.error('Request timed out');
-              } else {
-                document.querySelector('#announcement-2').innerHTML = 'Request timed out. Please try again.';
-                console.error(error);
-              }
-            });
-        });
-      });
+            outputFieldText.style.display = "block";
+            outputField.style.display = "block";
+            outputField.value = "Stealth Address: " + stealthAddress +
+              "\nAnnouncement: " + announcement["ephemeralPubKey"] + "\nStealth Secret: " + hashedSharedSecret;
+              console.log("stealthAddress:", stealthAddress);
+              console.log("ephemeralPublicKey:", ephemeralPublicKey);
+              console.log("hashedSharedSecret:", hashedSharedSecret);
+            break;
+        }
+        if (window.foundStealthInfo === false) {
+          outputField.style.display = "block";
+          outputField.value = "Nothing found.";
+        }
+
+    });
+  });
 
 
       fetch('https://raw.githubusercontent.com/nerolation/stealth-announcements/main/announcements.csv')
@@ -248,6 +225,7 @@ nav {
           }
 
           Announcements.push(rowObject);
+          window.announcements = Announcements;
         }
 
         console.log(Announcements);

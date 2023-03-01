@@ -23,9 +23,10 @@ global.generateStealthInfo = function generateStealthInfo(stealthMetaAddress) {
     throw "Wrong address format; Address must start with `st:eth:0x...`";
   }
 
+  const R_pubkey_spend = secp.Point.fromHex(USER.slice(9,75));
+  console.log('R_pubkey_spend:', R_pubkey_spend);
 
-  const R_pubkey_view = secp.Point.fromHex(USER.slice(9,75));
-  const R_pubkey_spend = secp.Point.fromHex(USER.slice(75,));
+  const R_pubkey_view = secp.Point.fromHex(USER.slice(75,));
 
 //  const randomInt = BigInt(`0x${hexString}`);
 
@@ -53,8 +54,8 @@ global.generateStealthInfo = function generateStealthInfo(stealthMetaAddress) {
   return {"stealthAddress":stealthAddress, "ephemeralPublicKey":"0x"+Buffer.from(ephemeralPublicKey).toString('hex'), "ViewTag":"0x"+ViewTag.toString('hex')};
 }
 //console.log("generateStealthInfo......................");
-//var info = generateStealthInfo("st:eth:0x02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b");
-
+//var info = generateStealthInfo("st:eth:0x02b69f343a19fa77a07ba1d106f54c35d5f4394dafd2cbc03a52b1f7b51ffd7c15024f41330ec0e0ba6aab92e3b247057405560035b9afce2c65de16040ace97d43a");
+//console.log("------------------++++++++++++++++++++++++++++++++++++++++++++++++++++---------------");
 
 global.parseStealthAddresses = function parseStealthAddresses(
   ephemeralPublicKey_hex,
@@ -67,7 +68,9 @@ global.parseStealthAddresses = function parseStealthAddresses(
   var ephemeralPublicKey = secp.Point.fromHex(ephemeralPublicKey_hex.slice(2));
   //console.log('ephemeralPublicKey_hex:', ephemeralPublicKey_hex);
 
-  const spendingPublicKey = secp.Point.fromHex(spendingPublicKey_hex.slice(2));
+  const spendingPublicKey = secp.Point.fromHex(spendingPublicKey_hex.slice(2), isCompressed=true);
+  console.log('spendingPublicKey:', spendingPublicKey);
+
 
   const sharedSecret = secp.getSharedSecret(BigInt(viewingPrivateKey), ephemeralPublicKey);
   console.log('sharedSecret:', sharedSecret);
@@ -79,22 +82,27 @@ global.parseStealthAddresses = function parseStealthAddresses(
   //console.log('View tag:', ViewTag.toString('hex'));
 
   const hashedSharedSecretPoint = secp.Point.fromPrivateKey(Buffer.from(hashedSharedSecret, "hex"));
+  console.log('hashedSharedSecretPoint1:', hashedSharedSecretPoint);
 
   //console.log('hashedSharedSecretPoint:', hashedSharedSecretPoint);
   const stealthPublicKey = spendingPublicKey.add(hashedSharedSecretPoint);
-  console.log("stealthPublicKey :",stealthPublicKey);
+  console.log("stealthPublicKey :",stealthPublicKey.toHex());
 
   const stealthAddress = toEthAddress(stealthPublicKey.toHex());
-
+  console.log(stealthAddress);
+  console.log(stealthAddress_given);
   if (stealthAddress === stealthAddress_given) {
-    console.log(stealthAddress);
-    console.log(stealthAddress_given);
     return [stealthAddress, ephemeralPublicKey_hex,  "0x" + hashedSharedSecret.toString('hex')];
   }
   return false;
 }
 //console.log("parseStealthAddresses......................");
-//success = parseStealthAddresses(info["ephemeralPublicKey"], info["stealthAddress"], "0x02e3f061681d080148202d40c203db2d411d44a954e847afc9c1ef90db08981e6b", "0x5ae07d3818695379db1e82a684e1be374b5c4dc40dc8a754adf45cdcb9a4d784")
+//success = parseStealthAddresses(
+//  info["ephemeralPublicKey"],
+//  info["stealthAddress"],
+//  "0x02b69f343a19fa77a07ba1d106f54c35d5f4394dafd2cbc03a52b1f7b51ffd7c15",
+//  "0x56fdd8d2a89366477762cf13ca47a3dac777af62dfdbaa81a7de54b7da0da21c"
+//)
 //console.log(success);
 //console.log("-----------------------------------------------------");
 //console.log("privToAddress......................");
@@ -113,9 +121,7 @@ global.generateRandomStealthMetaAddress = function generateRandomStealthMetaAddr
   const spendingPublicKey = uintArrayToHex(secp.getPublicKey(spendingPrivateKey, isCompressed=true));
   const viewingPublicKey = uintArrayToHex(secp.getPublicKey(viewingPrivateKey, isCompressed=true));
   const stealthMetaAddress = "st:eth:0x"+spendingPublicKey+viewingPublicKey;
-  return ["0x"+spendingPrivateKey.toString(16), "0x"+viewingPrivateKey.toString(16), stealthMetaAddress]
-
-
+  return ["0x"+spendingPrivateKey.toString(16), "0x"+viewingPrivateKey.toString(16), "0x"+spendingPublicKey, "0x"+viewingPublicKey, stealthMetaAddress]
 }
 //generateRandomStealthMetaAddress();
 //var stealthPrivateKey = BigInt("0x"+success[2]) + BigInt("0x5ae07d3818695379db1e82a684e1be374b5c4dc40dc8a754adf45cdcb9a4d784");
