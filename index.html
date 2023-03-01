@@ -185,12 +185,11 @@ nav {
               }
 
               Announcements.push(rowObject);
-              window.announcements = Announcements;
-            }
 
+            }
+            window.announcements = Announcements;
             console.log(Announcements);
-            })
-            .catch(error => console.error(error));
+
 
           var spendingPub = document.querySelector('#spendpub').value;
           var viewingPriv = document.querySelector('#viewpriv').value;
@@ -201,6 +200,9 @@ nav {
             var announcement = window.announcements[i];
             console.log("announcement[ephemeralPubKey]:", announcement["ephemeralPubKey"]);
             console.log("announcement[stealthAddress]:", announcement["stealthAddress"]);
+            if (!announcement["ephemeralPubKey"]) {
+              continue;
+            }
             var stealthInfo = parseStealthAddresses(announcement["ephemeralPubKey"], announcement["stealthAddress"].toLowerCase(), spendingPub, viewingPriv);
             console.log("-========================");
             console.log(stealthInfo);
@@ -227,6 +229,8 @@ nav {
           outputField.style.display = "block";
           outputField.value = "Nothing found.";
         }
+      })
+      .catch(error => console.error(error));
 
     });
   });
