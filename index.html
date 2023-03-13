@@ -330,6 +330,7 @@ dd {
             document.querySelector("#input-form-3 > button").innerText = "Continue parsing";
             document.querySelector("#input-form-4").style.display = "block";
             outputField2.style.display = "block";
+            document.querySelector("#sharedsecret").value = hashedSharedSecret;
             break
         }
         if (window.foundStealthInfo === false) {
@@ -349,11 +350,13 @@ dd {
       var spendingPrivatKey = document.querySelector('#spendpriv').value;
       var sharedSecret = document.querySelector('#sharedsecret').value;
       var stealthPrivateKey = (BigInt(spendingPrivatKey)+BigInt(sharedSecret)) % BigInt("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
+      stealthPrivateKeyString = stealthPrivateKey.toString(16);
+      stealthPrivateKeyString = "0x"+stealthPrivateKeyString.padStart(64, '0');
       outputFieldText2.style.display = "block";
       outputField2.style.display = "block";
       var stealthAddress = privToAddress(stealthPrivateKey);
       console.log(stealthAddress);
-      outputField2.value = "Stealth Private Key: 0x" + stealthPrivateKey.toString(16)+
+      outputField2.value = "Stealth Private Key: " + stealthPrivateKeyString+
         "\nStealth Address: " + stealthAddress;
     });
   });
