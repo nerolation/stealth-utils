@@ -90,17 +90,13 @@ dd {
       <section id="introduction">
         <h2>Introduction</h2>
         <p><strong>Stealth addresses</strong> are a way of protecting the <strong>privacy of recipients</strong> in cryptocurrency transactions.
-          They allow a sender to <strong>non-interactively</strong> generate a new address for the recipient,
+          <br>They allow a sender to <strong>non-interactively</strong> generate a new address for the recipient,
           making it look like as if the sender interacted with some random account.</p>
         <p><strong>On this page, we'll explore the basics of stealth addresses and how they work.</strong>
-          The following is based on <a href=https://eips.ethereum.org/EIPS/eip-5564>ERC-5564</a> which outlines a
-          standardization for stealth addresses to facilitate their widespread usage.</p>
-          Although, stealth addresses have been around for more than 10 years now, we haven't leveraged their potential yet.
-          The main reason for this is the absence of a standardized method for conducting stealth transactions,
-          which would require senders to be sure that recipients are aware of the cryptographic scheme being used so that they can ultimately locate their own stealth addresses.
-          By generalizing stealth addresses and providing different stealth address implementations (that use different cryptographic schemes) a central place to publish the
-          information required by recipients to located their stealth addresses, ERC-5564 acts as a basis-framework for all sorts of cryptographic schemes that can be used for stealth addresses.
+          <br>The following is based on <a href=https://eips.ethereum.org/EIPS/eip-5564>ERC-5564</a> which outlines a
+          basis framework for implementing stealth addresses.</p>
       </section>
+      <hr>
       <section id="example1">
         <h2>How to receive stealth transactions?</h2>
         <div>
@@ -179,20 +175,23 @@ dd {
           <button type="submit">Parse</button>
         </form>
 
-          <textarea id="secretinfo" rows="3" style="width:70%;max-width:1000px;display:none;"></textarea>
+          <textarea id="secretinfo" rows="3" style="width:70%;max-width:800px;display:none;"></textarea>
           <p id="psecretinfo" style="display:none;">The stealth secret can then be used to derive the private key that can access the funds on the stealth address <br>Essentially, all the recipient has to to is a simple addition: The recipient takes the spending private key and adds it to the stealth secret. <br>You can use the below field to derive the final stealth private key:</p>
 
 
           <form style="display:none;" id="input-form-4">
-            <input style="width:70%;max-width:600px;" placeholder="0x... (spending private key)" type="text" id="spendpriv">
+            <input style="width:70%;max-width:600px;" placeholder="0x... (spending private key)" type="text" id="spendpriv"><br>
             <input style="width:70%;max-width:600px;" placeholder="0x... (stealth secret)" type="text" id="sharedsecret">
             <button type="submit">Get private key</button>
           </form>
 
-            <textarea id="secretinfo2" rows="3" style="width:70%;max-width:600px;display:none;"></textarea>
-            <p id="psecretinfo2" style="display:none;">The stealth private key can then be imported and used to access the funds on the stealth address.</p>
+            <textarea id="secretinfo2" rows="3" style="width:70%;max-width:800px;display:none;"></textarea>
+            <p id="psecretinfo2" style="display:none;"><strong>The stealth private key can then be imported and used to access the funds on the stealth address.</strong></p>
 
       </section>
+      <br>
+      <hr>
+      <br>
       <section id="faq">
         <h2>FAQs</h2>
         <div class="faq-section">
@@ -244,6 +243,13 @@ dd {
         that use different cryptographic schemes, such as secp256k1, to build upon this foundation and take advantage of the standardized Messenger contract.
         <br>ERC-6538 represents the Registry Contract that serves as a central place for users to store and publish their stealth meta-addresses. Furhtermore, the registry's goal is to enable smart contracts access to users' stealth meta-addresses in programmatic manners.</dd>
     </div>
+    <div class="faq-item">
+    <dt>What is there to be standardized?</dt>
+    Stealth addresses require senders to be sure that recipients are aware of the cryptographic scheme
+    being used so that they can ultimately locate their own stealth addresses.
+    By generalizing stealth addresses and providing different stealth address implementations (that use different cryptographic schemes) a central place to publish the
+    information required by recipients to located their stealth addresses, ERC-5564 acts as a basis-framework
+    for all sorts of cryptographic schemes that allow stealth addresses.
     <div class="faq-item">
       <dt>You cannot expect users to copy n' paste private keys!?</dt>
       <dd>The above statement is true, but it only serves as a proof of concept (PoC).
