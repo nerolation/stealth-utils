@@ -3,84 +3,80 @@
   <head>
     <title>Stealth Addresses Introduction</title>
     <meta charset="UTF-8">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@nero_eth">
-<meta name="twitter:title" content="Stealth Addresses Introduction">
-<meta name="twitter:description" content="Introduction into Stealth Addresses and EIP-5564.">
-<meta property="og:title" content="Stealth Addresses" relay="" api="" dashboard="">
-<meta property="og:site_name" content="https://nerolation.github.io/stealth-utils/">
-<meta property="og:url" content="https://nerolation.github.io/stealth-utils/">
-<meta property="og:description" content="Introduction into Stealth Addresses and EIP-5564.">
-<meta property="og:type" content="website">
-<link rel="shortcut icon" href="https://mevboost.toniwahrstaetter.com/ethlogo.png">
-<meta name="description" content="Introduction into Stealth Addresses and EIP-5564.">
-<meta name="keywords" content="Ethereum, Stealth Addresses, Privacy, EIP-5564">
- <meta name="author" content="Toni Wahrstätter">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nero_eth">
+    <meta name="twitter:title" content="Stealth Addresses Introduction">
+    <meta name="twitter:description" content="Introduction into Stealth Addresses and EIP-5564.">
+    <meta property="og:title" content="Stealth Addresses" relay="" api="" dashboard="">
+    <meta property="og:site_name" content="https://nerolation.github.io/stealth-utils/">
+    <meta property="og:url" content="https://nerolation.github.io/stealth-utils/">
+    <meta property="og:description" content="Introduction into Stealth Addresses and EIP-5564.">
+    <meta property="og:type" content="website">
+    <link rel="shortcut icon" href="https://mevboost.toniwahrstaetter.com/ethlogo.png">
+    <meta name="description" content="Introduction into Stealth Addresses and EIP-5564.">
+    <meta name="keywords" content="Ethereum, Stealth Addresses, Privacy, EIP-5564">
+    <meta name="author" content="Toni Wahrstätter">
     <style>
-    body {
-  font-family: Arial, sans-serif;
-  color: #333;
-  background-color: #f8f8f8;
-}
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        background-color: #f8f8f8;
+      }
 
-header {
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-}
+      header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+      }
 
-nav {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
+      nav {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
 
-.faq-section {
-  background-color: #f2f2f2;
-  border-radius: 10px;
-}
+      .faq-section {
+        background-color: #f2f2f2;
+        border-radius: 10px;
+      }
 
-.faq-item {
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background-color: #fff;
-  padding: 20px;
-}
+      .faq-item {
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 20px;
+      }
 
-.faq-item:hover {
-  translate: 0vw -0.5vh;
-  transition: 0.3s;
+      .faq-item:hover {
+        translate: 0vw -0.5vh;
+        transition: 0.3s;
+      }
 
-}
+      dt {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 6px;
+        color: #333;
+      }
 
-dt {
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 6px;
-  color: #333;
-}
+      dd {
+        line-height: 1.5;
+        color: #202020;
+      }
 
-dd {
-  line-height: 1.5;
-  color: #202020;
-}
+      /* Media query for smaller screens */
+      @media only screen and (max-width: 600px) {
+        dt {
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
 
-/* Media query for smaller screens */
-@media only screen and (max-width: 600px) {
-  dt {
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-
-  dd {
-    font-size: 12px;
-  }
-}
-
-
-
-</style>
+        dd {
+          font-size: 12px;
+        }
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -89,41 +85,46 @@ dd {
     <main>
       <section id="introduction">
         <h2>Introduction</h2>
-        <p><strong>Stealth addresses</strong> are a way of protecting the <strong>privacy of recipients</strong> in cryptocurrency transactions.
-          <br>They allow a sender to <strong>non-interactively</strong> generate a new address for the recipient,
-          making it look like as if the sender interacted with some random account.</p>
-        <p><strong>On this page, we'll explore the basics of stealth addresses and how they work.</strong>
-          <br>The following is based on <a href=https://eips.ethereum.org/EIPS/eip-5564>ERC-5564</a> which outlines a
-          basis framework for implementing stealth addresses.</p>
+        <p>
+          <strong>Stealth addresses</strong> are a way of protecting the <strong>privacy of recipients</strong> in cryptocurrency transactions. <br>They allow a sender to <strong>non-interactively</strong> generate a new address for the recipient, making it look like as if the sender interacted with some random account.
+        </p>
+        <p>
+          <strong>On this page, we'll explore the basics of stealth addresses and how they work.</strong>
+          <br>The following is based on <a href=https://eips.ethereum.org/EIPS/eip-5564>ERC-5564</a> which outlines a basis framework for implementing stealth addresses.
+        </p>
       </section>
       <hr>
       <section id="example1">
         <h2>How to receive stealth transactions?</h2>
         <div>
-        <p>In order to signal your ability to receive stealth transactions, you need a <span style="font-weight: bold;">stealth meta-address</span>. <br>The stealth meta-address consitsts of <span style="font-weight: bold;">two different public keys</span> (that can be compressed to 33 bytes each),
-        the <span style="font-weight: bold;">spending</span> and the <span style="font-weight: bold;">viewing public key</span>,
-        which are used by senders to send funds to the stealth address of the respective user.</p>
-        <ul>
-        <li><strong>The stealth meta-address can be publicly shared </strong>and used by others to generate stealth addresses on behalf of the owner.</li>
-        <li><strong>The stealth meta-address does not reveal any information</strong> about future stealth addresses that are generated on behalf of the owner.</li>
-        <li><strong>The corresponding private keys must be kept private.</strong> Only the viewing key can be shared with trusted third parties.</li>
-        </ul>
-        <p><span style="font-weight: bold;">The viewing key secures your privacy, while the spending key secures access to funds.<br></span></p>
+          <p>In order to signal your ability to receive stealth transactions, you need a <span style="font-weight: bold;">stealth meta-address</span>. <br>The stealth meta-address consitsts of <span style="font-weight: bold;">two different public keys</span> (that can be compressed to 33 bytes each), the <span style="font-weight: bold;">spending</span> and the <span style="font-weight: bold;">viewing public key</span>, which are used by senders to send funds to the stealth address of the respective user. </p>
+          <ul>
+            <li>
+              <strong>The stealth meta-address can be publicly shared </strong>and used by others to generate stealth addresses on behalf of the owner.
+            </li>
+            <li>
+              <strong>The stealth meta-address does not reveal any information</strong> about future stealth addresses that are generated on behalf of the owner.
+            </li>
+            <li>
+              <strong>The corresponding private keys must be kept private.</strong> Only the viewing key can be shared with trusted third parties.
+            </li>
+          </ul>
+          <p>
+            <span style="font-weight: bold;">The viewing key secures your privacy, while the spending key secures access to funds. <br>
+            </span>
+          </p>
         </div>
         <div>
-        <p>Let's generate an example stealth meta-address</p>
-        <form id="input-form-1">
-          <input style="width:70%;max-width:1000px;" type="text" id="stealthmetaoutput">
-          <button type="submit">Generate</button>
-        </form>
-        <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined.<br>
-          The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://eips.ethereum.org/EIPS/eip-3770>EIP-3770</a>).</p>
-        <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
-        <textarea id="stealthmetaaddressinfo" rows="4" style="width:70%;max-width:900px;display:none"></textarea>
-        <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses.<br>As you can see, the spending and viewing public key are both part of the stealth meta-address.</p>
-      </div>
-
-
+          <p>Let's generate an example stealth meta-address</p>
+          <form id="input-form-1">
+            <input style="width:70%;max-width:1000px;" type="text" id="stealthmetaoutput">
+            <button type="submit">Generate</button>
+          </form>
+          <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined. <br> The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://eips.ethereum.org/EIPS/eip-3770>EIP-3770</a>). </p>
+          <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
+          <textarea id="stealthmetaaddressinfo" rows="4" style="width:70%;max-width:900px;display:none"></textarea>
+          <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses. <br>As you can see, the spending and viewing public key are both part of the stealth meta-address. </p>
+        </div>
       </section>
       <br>
       <hr>
@@ -131,18 +132,15 @@ dd {
       <section id="example2">
         <h2>How to send to a stealth meta-address?</h2>
         <div>
-        <p>In order to send fund to someone's stealth address you need the recipient's <span style="font-weight: bold;">stealth meta-address</span>.
-        Using the stealth meta-address of the recipient, one can derive the information necessary to perform the stealth transaction. </p>
-        <p>Let's go trough a quick example of how the final stealth address is derived. <br>
-          We have Alice, who wants to send funds to the stealth address of Bob.</p>
-        <ul>
-        <li>Alice take the stealth meta-address of Bob and inputs it into some ERC-5564 compatible interface.</li>
-        <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Announcement`.</li>
-        <li>Alice can then send funds to the derived stealth address and publish the additional information retrieved. After that, she can be sure that Bob has every required information to find the stealth address and access it.
-          All of this can be done in the background, hidden from the user, giving the user the feeling of sending to a stealth meta-address using a single transaction.</li>
-        <li>The announcement is published so that Bob can use it to find the stealth address Alice sent to and then derive the private key that controlls that address. </li>
-        <li>The View Tag will allow Bob to speed up the parsing process to find his stealth address.
-        </ul>
+          <p>In order to send fund to someone's stealth address you need the recipient's <span style="font-weight: bold;">stealth meta-address</span>. Using the stealth meta-address of the recipient, one can derive the information necessary to perform the stealth transaction. </p>
+          <p>Let's go trough a quick example of how the final stealth address is derived. <br> We have Alice, who wants to send funds to the stealth address of Bob. </p>
+          <ul>
+            <li>Alice take the stealth meta-address of Bob and inputs it into some ERC-5564 compatible interface.</li>
+            <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Announcement`.</li>
+            <li>Alice can then send funds to the derived stealth address and publish the additional information retrieved. After that, she can be sure that Bob has every required information to find the stealth address and access it. All of this can be done in the background, hidden from the user, giving the user the feeling of sending to a stealth meta-address using a single transaction.</li>
+            <li>The announcement is published so that Bob can use it to find the stealth address Alice sent to and then derive the private key that controlls that address. </li>
+            <li>The View Tag will allow Bob to speed up the parsing process to find his stealth address.
+          </ul>
         </div>
         <p>You can try it out here. Input a stealth meta-address and get all the info necessary to then execute a transaction.</p>
         <form id="input-form-2">
@@ -150,9 +148,8 @@ dd {
           <button type="submit">Get Info</button>
         </form>
         <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:1000px;display:none"></textarea>
-        <p>Head over to Etherscan and use the contract on <a  target="_blank" href=https://sepolia.etherscan.io/address/0x801dE179a92968C84C3dd716568fDCA7D4ab2552#writeContract>this</a> address to send ETH and publish the announcement. The view tag can be ignored for now.<br>
-          The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
-          <p>⚠️ Only try it on the Sepolia testnet ⚠️</p>
+        <p>Head over to Etherscan and use the contract on <a target="_blank" href=https://sepolia.etherscan.io/address/0x801dE179a92968C84C3dd716568fDCA7D4ab2552#writeContract>this</a> address to send ETH and publish the announcement. The view tag can be ignored for now. <br> The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
+        <p>⚠️ Only try it on the Sepolia testnet ⚠️</p>
       </section>
       <br>
       <hr>
@@ -160,34 +157,29 @@ dd {
       <section id="example3">
         <h2>How do I know that someone sent to a stealth address that I can access?</h2>
         <div>
-        <p><span style="font-weight: bold;">Parsing.</span> You have to go trough all announcements and check if the respecitive announcement,
-          applied to your viewing private key, can unlock a valid stealth address.<br>
-
-      While the <span style="font-weight: bold;">viewing private key</span> is used to find your stealth address,
-      the <span style="font-weight: bold;">spending private key</span> is used to access those funds.<br>
-      Therefore, the <span style="font-weight: bold;">viewing private key</span> can be given to a trusted parsing-provider that takes over the pasing job.<br>
-          Finally, if successfully, the parsing provider returns the announcement that can then be used, together with the spending private key, to access the stealth address.</p>
+          <p>
+            <span style="font-weight: bold;">Parsing.</span> You have to go trough all announcements and check if the respecitive announcement, applied to your viewing private key, can unlock a valid stealth address. <br> While the <span style="font-weight: bold;">viewing private key</span> is used to find your stealth address, the <span style="font-weight: bold;">spending private key</span> is used to access those funds. <br> Therefore, the <span style="font-weight: bold;">viewing private key</span> can be given to a trusted parsing-provider that takes over the pasing job. <br> Finally, if successfully, the parsing provider returns the announcement that can then be used, together with the spending private key, to access the stealth address.
+          </p>
         </div>
         <p>You can try it out here. Input your spending public key and your viewing private key and let the service start parsing.</p>
         <form id="input-form-3">
-          <input style="width:70%;max-width:600px;" placeholder="0x... (spending public key)" type="text" id="spendpub"><br>
+          <input style="width:70%;max-width:600px;" placeholder="0x... (spending public key)" type="text" id="spendpub">
+          <br>
           <input style="width:70%;max-width:600px;" placeholder="0x... (viewing private key)" type="text" id="viewpriv">
           <button type="submit">Parse</button>
         </form>
-
-          <textarea id="secretinfo" rows="3" style="width:70%;max-width:800px;display:none;"></textarea>
-          <p id="psecretinfo" style="display:none;">The stealth secret can then be used to derive the private key that can access the funds on the stealth address <br>Essentially, all the recipient has to to is a simple addition: The recipient takes the spending private key and adds it to the stealth secret. <br>You can use the below field to derive the final stealth private key:</p>
-
-
-          <form style="display:none;" id="input-form-4">
-            <input style="width:70%;max-width:600px;" placeholder="0x... (spending private key)" type="text" id="spendpriv"><br>
-            <input style="width:70%;max-width:600px;" placeholder="0x... (stealth secret)" type="text" id="sharedsecret">
-            <button type="submit">Get private key</button>
-          </form>
-
-            <textarea id="secretinfo2" rows="3" style="width:70%;max-width:800px;display:none;"></textarea>
-            <p id="psecretinfo2" style="display:none;"><strong>The stealth private key can then be imported and used to access the funds on the stealth address.</strong></p>
-
+        <textarea id="secretinfo" rows="3" style="width:70%;max-width:800px;display:none;"></textarea>
+        <p id="psecretinfo" style="display:none;">The stealth secret can then be used to derive the private key that can access the funds on the stealth address <br>Essentially, all the recipient has to to is a simple addition: The recipient takes the spending private key and adds it to the stealth secret. <br>You can use the below field to derive the final stealth private key: </p>
+        <form style="display:none;" id="input-form-4">
+          <input style="width:70%;max-width:600px;" placeholder="0x... (spending private key)" type="text" id="spendpriv">
+          <br>
+          <input style="width:70%;max-width:600px;" placeholder="0x... (stealth secret)" type="text" id="sharedsecret">
+          <button type="submit">Get private key</button>
+        </form>
+        <textarea id="secretinfo2" rows="3" style="width:70%;max-width:800px;display:none;"></textarea>
+        <p id="psecretinfo2" style="display:none;">
+          <strong>The stealth private key can then be imported and used to access the funds on the stealth address.</strong>
+        </p>
       </section>
       <br>
       <hr>
@@ -195,99 +187,75 @@ dd {
       <section id="faq">
         <h2>FAQs</h2>
         <div class="faq-section">
-  <dl>
-    <div class="faq-item">
-      <dt>What is a stealth address?</dt>
-      <dd>Stealth addresses are regular Ethereum addresses that are generated by the sender in a non-interactive manner,
-        with the knowledge that only the intended recipient will be able to access it.
-        This approach allows the sender to avoid direct interaction with a specific entity,
-        such as xyz.eth, and instead communicate through a fresh account that is not linked to the respective entity.</dd>
-    </div>
-
-    <div class="faq-item">
-      <dt>What's the benefit of using stealth addresses?</dt>
-      <dd>The use of stealth addresses enables the recipient of a transaction to remain anonymous, thereby preventing any on-chain links between the identity of the sender and the recipient. By utilizing stealth addresses, senders can send funds to recipients without revealing the fact that such a transaction has taken place to anyone else.</dd>
-    </div>
-    <div class="faq-item">
-      <dt>What is meant by "non-interactively"?</dt>
-      <dd>Stealth addresses do not require recipients to set up fresh new addresses for all potential senders. Instead, users must only generate a personal stealth meta-address once, which can then be used by other users to derive stealth addresses from it. Of course, nothing prevents users from just exchanging fresh addresses for every interaction manually, though, stealth addresses make such scenarios much more user-friendly.</dd>
-    </div>
-    <div class="faq-item">
-      <dt>What are some potential use cases for stealth addresses?</dt>
-      <dd>Stealth addresses offer significant potential for use in political donations, where senders may wish to avoid creating an on-chain connection to the recipient. For instance, by employing stealth addresses, one can contribute to an organization while enabling the organization to remain anonymous. To external observers, stealth transactions appear identical to regular transactions to a new address. An equivalent level of privacy can be achieved if senders use an encrypted channel to reach out to recipients and request newly generated addresses. However, this approach would necessitate the recipient to be active for every potential sender.</dd>
-    </div>
-    <div class="faq-item">
-      <dt>What is a stealth meta-address?</dt>
-      <dd>The stealth meta-address is a publicly shareable address that users can use to signal their willingness to engage in stealth address transactions. Senders use the stealth meta-address to derive distinct stealth addresses for their recipients. Wallet applications may provide UIs that allow users to simply input the stealth meta-address of another user and send directly to the (on-the-fly) generated stealth address, while emitting the necessary announcement.</dd>
-    </div>
-    <div class="faq-item">
-      <dt>Why is the stealth meta-address so long?</dt>
-      <dd>Stealth meta-addresses consist of two (different) public keys, the spending and the viewing public key. Both public keys can be compressed to 33 bytes, so the stealth meta-address has a length of 66 bytes. Notably, ERC-5564 is agnostic to different cryptographic schemes and allows users to generate stealth meta-addresses with an arbitrarily length (eg. lattice-based crypto).</dd>
-    </div>
-    <div class="faq-item">
-      <dt>Why do I need a spending and a viewing key for a stealth address?</dt>
-      <dd>While the viewing private key allows users to locate/find stealth addresses,
-        the spending private key is used to derive the stealth private key that can eventually access the funds on the stealth address.
-        Therefore, the viewing private key can be shared with trusted parsing providers who may assist in finding active stealth addresses that belong to oneself.
-        The spending private key, on the other hand, must be kept private at all times.</dd>
-    </div>
-    <div class="faq-item">
-      <dt>What is ERC-5564 and ERC-6538?</dt>
-      <dd>Stealth Addresses have been known for more than 10 years now, however, without agreeing on a standardized way to used them,
-        we cannot leverage the small, but for some use cases, sufficient privacy gains that stealth addresses offer.
-        In essence, ERC-5564 serves to standardize the Messenger contract, which is necessary to trigger the event that provides recipients
-        with the information needed to locate their stealth addresses (through parsing). By having a central place to "subscribe" to
-        in order to stay up-to-date with incoming stealth transactions, users can safely engage in such transactions,
-        knowing that the recipient doesn't have to experiment with different cryptographic methods to derive the final stealth address.
-        While ERC-5564 establishes the basic framework for stealth addresses, it also enables the implementation of specific stealth address methods
-        that use different cryptographic schemes, such as secp256k1, to build upon this foundation and take advantage of the standardized Messenger contract.
-        <br>ERC-6538 represents the Registry Contract that serves as a central place for users to store and publish their stealth meta-addresses. Furhtermore, the registry's goal is to enable smart contracts access to users' stealth meta-addresses in programmatic manners.</dd>
-    </div>
-    <div class="faq-item">
-    <dt>What is there to be standardized?</dt>
-    Stealth addresses require senders to be sure that recipients are aware of the cryptographic scheme
-    being used so that they can ultimately locate their own stealth addresses.
-    By generalizing stealth addresses and providing different stealth address implementations (that use different cryptographic schemes) a central place to publish the
-    information required by recipients to located their stealth addresses, ERC-5564 acts as a basis-framework
-    for all sorts of cryptographic schemes that allow stealth addresses.
-    </div>
-    <div class="faq-item">
-      <dt>You cannot expect users to copy n' paste private keys!?</dt>
-      <dd>The above statement is true, but it only serves as a proof of concept (PoC).
-        In order to avoid forcing users to engage directly with their plain-text private keys, there are alternative methods available for productive uses.
-        One such method is the use of RFC 6979, which defines deterministic signatures. This method can be utilized to generate an application-specific key pair for the user.
-          Here's how it works: The user logs into the website or application and signs a pre-defined and constant string,
-          such as "This is a message to access your stealth address wallet on website xzy.com."
-          The signature is then sliced into different parts and the individual parts are hashed to derive the private keys.
-          These private keys are the spending and viewing keys required by ERC-5564.
-          The corresponding public keys can then be directly registered into the Stealth-Meta Address Registry.
-          Overall, this approach ensures that users do not have to directly engage with their private keys, making the process more secure and user-friendly.</dd>
-    </div>
-    <div class="faq-item">
-      <dt>How close to production?</dt>
-      <dd>Stealth addressess have already been implemented and brought to the Ethereum mainnet (and certain L2s) by the team of ScopeLift
-        under the name of <a href="https://app.umbra.cash/" >Umbra</a>.
-        Umbra uses a slightly different mechanism to generate stealth addresses compared to the one specified in the secp256k1 example in ERC-5564, though,
-        it's a great tool to already try out stealth addresses in a production environment. </dd>
-    </div>
-  </dl>
-</div>
-
+          <dl>
+            <div class="faq-item">
+              <dt>What is a stealth address?</dt>
+              <dd>Stealth addresses are regular Ethereum addresses that are generated by the sender in a non-interactive manner, with the knowledge that only the intended recipient will be able to access it. This approach allows the sender to avoid direct interaction with a specific entity, such as xyz.eth, and instead communicate through a fresh account that is not linked to the respective entity.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>What's the benefit of using stealth addresses?</dt>
+              <dd>The use of stealth addresses enables the recipient of a transaction to remain anonymous, thereby preventing any on-chain links between the identity of the sender and the recipient. By utilizing stealth addresses, senders can send funds to recipients without revealing the fact that such a transaction has taken place to anyone else.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>What is meant by "non-interactively"?</dt>
+              <dd>Stealth addresses do not require recipients to set up fresh new addresses for all potential senders. Instead, users must only generate a personal stealth meta-address once, which can then be used by other users to derive stealth addresses from it. Of course, nothing prevents users from just exchanging fresh addresses for every interaction manually, though, stealth addresses make such scenarios much more user-friendly.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>What are some potential use cases for stealth addresses?</dt>
+              <dd>Stealth addresses offer significant potential for use in political donations, where senders may wish to avoid creating an on-chain connection to the recipient. For instance, by employing stealth addresses, one can contribute to an organization while enabling the organization to remain anonymous. To external observers, stealth transactions appear identical to regular transactions to a new address. An equivalent level of privacy can be achieved if senders use an encrypted channel to reach out to recipients and request newly generated addresses. However, this approach would necessitate the recipient to be active for every potential sender.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>What is a stealth meta-address?</dt>
+              <dd>The stealth meta-address is a publicly shareable address that users can use to signal their willingness to engage in stealth address transactions. Senders use the stealth meta-address to derive distinct stealth addresses for their recipients. Wallet applications may provide UIs that allow users to simply input the stealth meta-address of another user and send directly to the (on-the-fly) generated stealth address, while emitting the necessary announcement.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>Why is the stealth meta-address so long?</dt>
+              <dd>Stealth meta-addresses consist of two (different) public keys, the spending and the viewing public key. Both public keys can be compressed to 33 bytes, so the stealth meta-address has a length of 66 bytes. Notably, ERC-5564 is agnostic to different cryptographic schemes and allows users to generate stealth meta-addresses with an arbitrarily length (eg. lattice-based crypto).</dd>
+            </div>
+            <div class="faq-item">
+              <dt>Why do I need a spending and a viewing key for a stealth address?</dt>
+              <dd>While the viewing private key allows users to locate/find stealth addresses, the spending private key is used to derive the stealth private key that can eventually access the funds on the stealth address. Therefore, the viewing private key can be shared with trusted parsing providers who may assist in finding active stealth addresses that belong to oneself. The spending private key, on the other hand, must be kept private at all times.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>What is ERC-5564 and ERC-6538?</dt>
+              <dd>Stealth Addresses have been known for more than 10 years now, however, without agreeing on a standardized way to used them, we cannot leverage the small, but for some use cases, sufficient privacy gains that stealth addresses offer. In essence, ERC-5564 serves to standardize the Messenger contract, which is necessary to trigger the event that provides recipients with the information needed to locate their stealth addresses (through parsing). By having a central place to "subscribe" to in order to stay up-to-date with incoming stealth transactions, users can safely engage in such transactions, knowing that the recipient doesn't have to experiment with different cryptographic methods to derive the final stealth address. While ERC-5564 establishes the basic framework for stealth addresses, it also enables the implementation of specific stealth address methods that use different cryptographic schemes, such as secp256k1, to build upon this foundation and take advantage of the standardized Messenger contract. <br>ERC-6538 represents the Registry Contract that serves as a central place for users to store and publish their stealth meta-addresses. Furhtermore, the registry's goal is to enable smart contracts access to users' stealth meta-addresses in programmatic manners. </dd>
+            </div>
+            <div class="faq-item">
+              <dt>What is there to be standardized?</dt> Stealth addresses require senders to be sure that recipients are aware of the cryptographic scheme being used so that they can ultimately locate their own stealth addresses. By generalizing stealth addresses and providing different stealth address implementations (that use different cryptographic schemes) a central place to publish the information required by recipients to located their stealth addresses, ERC-5564 acts as a basis-framework for all sorts of cryptographic schemes that allow stealth addresses.
+            </div>
+            <div class="faq-item">
+              <dt>You cannot expect users to copy n' paste private keys!?</dt>
+              <dd>The above statement is true, but it only serves as a proof of concept (PoC). In order to avoid forcing users to engage directly with their plain-text private keys, there are alternative methods available for productive uses. One such method is the use of RFC 6979, which defines deterministic signatures. This method can be utilized to generate an application-specific key pair for the user. Here's how it works: The user logs into the website or application and signs a pre-defined and constant string, such as "This is a message to access your stealth address wallet on website xzy.com." The signature is then sliced into different parts and the individual parts are hashed to derive the private keys. These private keys are the spending and viewing keys required by ERC-5564. The corresponding public keys can then be directly registered into the Stealth-Meta Address Registry. Overall, this approach ensures that users do not have to directly engage with their private keys, making the process more secure and user-friendly.</dd>
+            </div>
+            <div class="faq-item">
+              <dt>How close to production?</dt>
+              <dd>Stealth addressess have already been implemented and brought to the Ethereum mainnet (and certain L2s) by the team of ScopeLift under the name of <a href="https://app.umbra.cash/">Umbra</a>. Umbra uses a slightly different mechanism to generate stealth addresses compared to the one specified in the secp256k1 example in ERC-5564, though, it's a great tool to already try out stealth addresses in a production environment. </dd>
+            </div>
+          </dl>
+        </div>
       </section>
       <section id="resources">
         <h2>Resources</h2>
         <ul>
-          <li><a href="https://eips.ethereum.org/EIPS/eip-5564">ERC-5564 - Stealth Address Messenger</a></li>
-          <li><a href="https://eips.ethereum.org/EIPS/eip-6538">ERC-6538 - Stealth Address Registry</a></li>
-          <li><a href="https://vitalik.ca/general/2023/01/20/stealth.html">Vitalik's incomplete guide to stealth addresses</a></li>
-          <li><a href="https://hackernoon.com/blockchain-privacy-enhancing-technology-series-stealth-address-i-c8a3eb4e4e43">Stealth Address Basics</a></li>
+          <li>
+            <a href="https://eips.ethereum.org/EIPS/eip-5564">ERC-5564 - Stealth Address Messenger</a>
+          </li>
+          <li>
+            <a href="https://eips.ethereum.org/EIPS/eip-6538">ERC-6538 - Stealth Address Registry</a>
+          </li>
+          <li>
+            <a href="https://vitalik.ca/general/2023/01/20/stealth.html">Vitalik's incomplete guide to stealth addresses</a>
+          </li>
+          <li>
+            <a href="https://hackernoon.com/blockchain-privacy-enhancing-technology-series-stealth-address-i-c8a3eb4e4e43">Stealth Address Basics</a>
+          </li>
         </ul>
       </section>
     </main>
     <footer>
       <p>Copyright © 2023 Toni Wahrstätter</p>
     </footer>
-    <script src="bundle.js", type="text/javascript"></script>
+    <script src="bundle.js" , type="text/javascript"></script>
     <script>
       window.skipParsingIteration = 0;
       window.addEventListener("load", (event) => {
@@ -304,11 +272,7 @@ dd {
           outputField.style.display = "block";
           outputFieldText.style.display = "block";
           outputFieldText2.style.display = "block";
-          outputField.value = "Spending Private Key: " + stealthInfo[0] +
-            "\nViewing Private Key: " + stealthInfo[1] +
-            "\nSpending Public Key: " + stealthInfo[2] +
-            "\nViewing Public Key: " + stealthInfo[3];
-
+          outputField.value = "Spending Private Key: " + stealthInfo[0] + "\nViewing Private Key: " + stealthInfo[1] + "\nSpending Public Key: " + stealthInfo[2] + "\nViewing Public Key: " + stealthInfo[3];
         });
         document.querySelector('#input-form-2').addEventListener('submit', function(e) {
           e.preventDefault();
@@ -317,104 +281,78 @@ dd {
           console.log("-");
           var outputField = document.querySelector('#stealthaddressinfo');
           outputField.style.display = "block";
-          outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] +
-            "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nView Tag: " + stealthAddressInfo["ViewTag"];
+          outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] + "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nView Tag: " + stealthAddressInfo["ViewTag"];
         });
-
         document.querySelector('#input-form-3').addEventListener('submit', function(e) {
           e.preventDefault();
-          fetch('https://raw.githubusercontent.com/nerolation/stealth-announcements/main/announcements.csv')
-          .then(response => response.text())
-          .then(data => {
-            const rows = data.split('\n');
-            console.log(rows);
-            const headers = rows[0].split(',');
-            const Announcements = [];
-
+          fetch('https://europe-west3-ethereum-data-nero.cloudfunctions.net/csv_to_json').then(response => response.text()).then(data => {
+            const rows = JSON.parse(data);
+            console.log(JSON.parse(data));
             for (let i = 1; i < rows.length; i++) {
-              const cells = rows[i].split(',');
-              const rowObject = {};
-
-              for (let j = 0; j < headers.length; j++) {
-                rowObject[headers[j]] = cells[j];
+              const row = rows[i];
+            }
+            window.announcements = rows;
+            console.log(window.announcements);
+            var spendingPub = document.querySelector('#spendpub').value;
+            var viewingPriv = document.querySelector('#viewpriv').value;
+            var outputField = document.querySelector('#secretinfo');
+            var outputField2 = document.querySelector('#secretinfo2');
+            var outputFieldText = document.querySelector('#psecretinfo');
+            outputField.value = "";
+            var foundStealthAddresses = 0;
+            for (let i = 0; i < rows.length; i++) {
+              var announcement = window.announcements[i];
+              if (!announcement["ephemeralPubKey"]) {
+                continue;
               }
-
-              Announcements.push(rowObject);
-
-            }
-            window.announcements = Announcements;
-            console.log(Announcements);
-
-
-          var spendingPub = document.querySelector('#spendpub').value;
-          var viewingPriv = document.querySelector('#viewpriv').value;
-          var outputField = document.querySelector('#secretinfo');
-          var outputField2 = document.querySelector('#secretinfo2');
-          var outputFieldText = document.querySelector('#psecretinfo');
-          outputField.value = "";
-          var foundStealthAddresses = 0;
-          for (var i=0; i<window.announcements.length;i++) {
-            var announcement = window.announcements[i];
-            if (!announcement["ephemeralPubKey"]) {
-              continue;
-            }
-            var stealthInfo = parseStealthAddresses(announcement["ephemeralPubKey"], announcement["stealthAddress"].toLowerCase(), spendingPub, viewingPriv);
-            window.foundStealthInfo = false;
-            if (stealthInfo === false) {
-              continue;
-            }
-            foundStealthAddresses += 1;
-            if (foundStealthAddresses <= window.skipParsingIteration) {
-              continue;
-            }
-            window.foundStealthInfo = true;
-            window.skipParsingIteration += 1;
-            var stealthAddress = stealthInfo[0];
-            var ephemeralPublicKey = stealthInfo[1];
-            var hashedSharedSecret = stealthInfo[2];
-
-            outputFieldText.style.display = "block";
-            outputField.style.display = "block";
-            outputField.value = "Stealth Address: " + stealthAddress +
-              "\nAnnouncement: " + announcement["ephemeralPubKey"] + "\nStealth Secret: " + hashedSharedSecret;
+              var stealthInfo = parseStealthAddresses(announcement["ephemeralPubKey"], announcement["stealthAddress"].toLowerCase(), spendingPub, viewingPriv);
+              window.foundStealthInfo = false;
+              if (stealthInfo === false) {
+                continue;
+              }
+              foundStealthAddresses += 1;
+              if (foundStealthAddresses <= window.skipParsingIteration) {
+                continue;
+              }
+              window.foundStealthInfo = true;
+              window.skipParsingIteration += 1;
+              var stealthAddress = stealthInfo[0];
+              var ephemeralPublicKey = stealthInfo[1];
+              var hashedSharedSecret = stealthInfo[2];
+              outputFieldText.style.display = "block";
+              outputField.style.display = "block";
+              outputField.value = "Stealth Address: " + stealthAddress + "\nAnnouncement: " + announcement["ephemeralPubKey"] + "\nStealth Secret: " + hashedSharedSecret;
               console.log("stealthAddress:", stealthAddress);
               console.log("ephemeralPublicKey:", ephemeralPublicKey);
               console.log("hashedSharedSecret:", hashedSharedSecret);
-            document.querySelector("#input-form-3 > button").innerText = "Continue parsing";
-            document.querySelector("#input-form-4").style.display = "block";
-            outputField2.style.display = "block";
-            document.querySelector("#sharedsecret").value = hashedSharedSecret;
-            break
-        }
-        if (window.foundStealthInfo === false) {
-          outputField.style.display = "block";
-          outputField.value = "Nothing found.";
-        }
-      })
-      .catch(error => console.error(error));
-
-    });
-
-
-    document.querySelector('#input-form-4').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var outputField2 = document.querySelector('#secretinfo2');
-      var outputFieldText2 = document.querySelector('#psecretinfo2');
-      var spendingPrivatKey = document.querySelector('#spendpriv').value;
-      var sharedSecret = document.querySelector('#sharedsecret').value;
-      var stealthPrivateKey = (BigInt(spendingPrivatKey)+BigInt(sharedSecret)) % BigInt("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
-      stealthPrivateKeyString = stealthPrivateKey.toString(16);
-      stealthPrivateKeyString = "0x"+stealthPrivateKeyString.padStart(64, '0');
-      outputFieldText2.style.display = "block";
-      outputField2.style.display = "block";
-      var stealthAddress = privToAddress(stealthPrivateKey);
-      console.log(stealthAddress);
-      outputField2.value = "Stealth Private Key: " + stealthPrivateKeyString+
-        "\nStealth Address: " + stealthAddress;
-    });
-  });
-
-      </script>
-
+              document.querySelector("#input-form-3 > button").innerText = "Continue parsing";
+              document.querySelector("#input-form-4").style.display = "block";
+              outputField2.style.display = "block";
+              document.querySelector("#sharedsecret").value = hashedSharedSecret;
+              break
+            }
+            if (window.foundStealthInfo === false) {
+              outputField.style.display = "block";
+              outputField.value = "Nothing found.";
+            }
+          }).catch(error => console.error(error));
+        });
+        document.querySelector('#input-form-4').addEventListener('submit', function(e) {
+          e.preventDefault();
+          var outputField2 = document.querySelector('#secretinfo2');
+          var outputFieldText2 = document.querySelector('#psecretinfo2');
+          var spendingPrivatKey = document.querySelector('#spendpriv').value;
+          var sharedSecret = document.querySelector('#sharedsecret').value;
+          var stealthPrivateKey = (BigInt(spendingPrivatKey) + BigInt(sharedSecret)) % BigInt("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
+          stealthPrivateKeyString = stealthPrivateKey.toString(16);
+          stealthPrivateKeyString = "0x" + stealthPrivateKeyString.padStart(64, '0');
+          outputFieldText2.style.display = "block";
+          outputField2.style.display = "block";
+          var stealthAddress = privToAddress(stealthPrivateKey);
+          console.log(stealthAddress);
+          outputField2.value = "Stealth Private Key: " + stealthPrivateKeyString + "\nStealth Address: " + stealthAddress;
+        });
+      });
+    </script>
   </body>
 </html>
