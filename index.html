@@ -141,7 +141,7 @@
             <button type="submit">Generate</button><br>
           </form>
           <button id="copybutton" onclick="copyToClipboard()">Copy to Clipboard</button>
-          <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined. <br> The prefix `st:eth:` tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://eips.ethereum.org/EIPS/eip-3770>EIP-3770</a>). </p>
+          <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined. <br> The prefix <strong>`st:eth:`</strong> tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://eips.ethereum.org/EIPS/eip-3770>EIP-3770</a>). </p>
           <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
           <textarea id="stealthmetaaddressinfo" rows="4" style="width:70%;max-width:900px;display:none"></textarea>
           <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses. <br>As you can see, the spending and viewing public key are both part of the stealth meta-address. </p>
@@ -160,7 +160,7 @@
             <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Announcement`.</li>
             <li>Alice can then send funds to the derived stealth address and publish the additional information retrieved. After that, she can be sure that Bob has every required information to find the stealth address and access it. All of this can be done in the background, hidden from the user, giving the user the feeling of sending to a stealth meta-address using a single transaction.</li>
             <li>The announcement is published so that Bob can use it to find the stealth address Alice sent to and then derive the private key that controlls that address. </li>
-            <li>The View Tag will allow Bob to speed up the parsing process to find his stealth address.
+            <li>The View Tag will allow Bob to speed up the parsing process to find his stealth address and will be included in the metadata field.
           </ul>
         </div>
         <p>You can try it out here. Input a stealth meta-address and get all the info necessary to then execute a transaction.</p>
@@ -169,7 +169,7 @@
           <button type="submit">Get Info</button>
         </form>
         <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:1000px;display:none"></textarea>
-        <p>Head over to Etherscan and use the contract on <a target="_blank" href=https://sepolia.etherscan.io/address/0x801dE179a92968C84C3dd716568fDCA7D4ab2552#writeContract>this</a> address to send ETH and publish the announcement. The view tag can be ignored for now. <br> The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
+        <p>Head over to Etherscan and use the contract on <a target="_blank" href=https://sepolia.etherscan.io/address/0xb193dE1071fc1AF3FF1DF4c6d5091284274519EF#writeContract>this</a> address to send ETH and publish the announcement. The view tag is included in the metadata. <br> The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
         <p>⚠️ Only try it on the Sepolia testnet ⚠️</p>
       </section>
       <br>
@@ -246,7 +246,7 @@
             </div>
             <div class="faq-item">
               <dt>You cannot expect users to copy n' paste private keys!?</dt>
-              <dd>The above statement is true, but it only serves as a proof of concept (PoC). In order to avoid forcing users to engage directly with their plain-text private keys, there are alternative methods available for productive uses. One such method is the use of RFC 6979, which defines deterministic signatures. This method can be utilized to generate an application-specific key pair for the user. Here's how it works: The user logs into the website or application and signs a pre-defined and constant string, such as "This is a message to access your stealth address wallet on website xzy.com." The signature is then sliced into different parts and the individual parts are hashed to derive the private keys. These private keys are the spending and viewing keys required by ERC-5564. The corresponding public keys can then be directly registered into the Stealth-Meta Address Registry. Overall, this approach ensures that users do not have to directly engage with their private keys, making the process more secure and user-friendly.</dd>
+              <dd>The above statement is true, but it only serves as a proof of concept (PoC). In order to avoid forcing users to engage directly with their plain-text private keys, there are alternative methods available for productive uses. One such method is the use of RFC 6979, which defines deterministic signatures. This method can be utilized to generate an application-specific key pair for the user. Here's how it works: The user logs into the website or application and signs a pre-defined and constant string, such as "This is a message to access your stealth address wallet on website xyz.com." The signature is then sliced into different parts and the individual parts are hashed to derive the private keys. These private keys are the spending and viewing keys required by ERC-5564. The corresponding public keys can then be directly registered into the Stealth-Meta Address Registry. Overall, this approach ensures that users do not have to directly engage with their private keys, making the process more secure and user-friendly.</dd>
             </div>
             <div class="faq-item">
               <dt>How close to production?</dt>
@@ -312,7 +312,7 @@
           console.log("-");
           var outputField = document.querySelector('#stealthaddressinfo');
           outputField.style.display = "block";
-          outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] + "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nView Tag: " + stealthAddressInfo["ViewTag"];
+          outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] + "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nMetadata: " + stealthAddressInfo["ViewTag"];
         });
         document.querySelector('#input-form-3').addEventListener('submit', function(e) {
           e.preventDefault();
@@ -336,7 +336,13 @@
               if (!announcement["ephemeralPubKey"]) {
                 continue;
               }
-              var stealthInfo = parseStealthAddresses(announcement["ephemeralPubKey"], announcement["stealthAddress"].toLowerCase(), spendingPub, viewingPriv);
+              var stealthInfo = parseStealthAddresses(
+                announcement["ephemeralPubKey"],
+                announcement["stealthAddress"].toLowerCase(),
+                spendingPub,
+                viewingPriv,
+                announcement["metadata"].slice(2,4)
+              );
               window.foundStealthInfo = false;
               if (stealthInfo === false) {
                 continue;
@@ -365,6 +371,9 @@
             if (window.foundStealthInfo === false) {
               outputField.style.display = "block";
               outputField.value = "Nothing found.";
+              document.querySelector("#secretinfo").style["background-color"] = "#fa8c8c";
+            } else {
+              document.querySelector("#secretinfo").style["background-color"] = "#8cfa8e";
             }
           }).catch(error => console.error(error));
         });
@@ -382,6 +391,11 @@
           var stealthAddress = privToAddress(stealthPrivateKey);
           console.log(stealthAddress);
           outputField2.value = "Stealth Private Key: " + stealthPrivateKeyString + "\nStealth Address: " + stealthAddress;
+          if (document.querySelector("#secretinfo").value.indexOf(stealthAddress) > 0) {
+            document.querySelector("#secretinfo2").style["background-color"] = "#8cfa8e";
+          } else {
+             document.querySelector("#secretinfo2").style["background-color"] = "#fa8c8c"
+          }
         });
       });
     </script>
