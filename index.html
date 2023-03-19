@@ -16,11 +16,12 @@
     <meta name="description" content="Introduction into Stealth Addresses and EIP-5564.">
     <meta name="keywords" content="Ethereum, Stealth Addresses, Privacy, EIP-5564">
     <meta name="author" content="Toni Wahrstätter">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
 
     * {
       transition-duration: 0.1s;
-
     }
       body {
         font-family: Arial, sans-serif;
@@ -80,6 +81,7 @@
       section {
         margin-left: 3%;
         margin-right: 3%;
+        max-width: 1400px;
       }
 
       h2 {
@@ -200,7 +202,10 @@
         }
 
         button {
-          font-size: 14px;
+          font-size: 18px;
+        }
+        input{
+          font-size: 20px;
         }
       }
     </style>
@@ -251,13 +256,13 @@
         <div>
           <p>Let's generate an example stealth meta-address</p>
           <form id="input-form-1">
-            <input style="width:70%;max-width:1100px;" type="text" id="stealthmetaoutput">
+            <input style="width:90%;max-width:1000px;" type="text" id="stealthmetaoutput">
             <button type="submit">Generate</button><br>
           </form>
           <button id="copybutton" onclick="copyToClipboard()">Copy to Clipboard</button>
           <p>Essentially, the stealth meta-address is just the same as 2 standard Ethereum addresses combined. <br> The prefix <strong>`st:eth:`</strong> tells us that this is a stealth meta-address used on the Ethereum mainnet (see <a href=https://eips.ethereum.org/EIPS/eip-3770>EIP-3770</a>). </p>
           <p id="pstealthmetaaddressinfo" style="display:none;">And these are the spending and viewing private keys, that map to the public keys encoded in the stealth meta-address:</p>
-          <textarea id="stealthmetaaddressinfo" rows="4" style="width:70%;max-width:900px;display:none"></textarea>
+          <textarea id="stealthmetaaddressinfo" rows="4" style="width:90%;max-width:900px;display:none"></textarea>
           <p id="pstealthmetaaddressinfo2" style="display:none;">The private keys must be kept secret because they are used to find and access one's own stealth addresses. <br>As you can see, the spending and viewing public key are both part of the stealth meta-address. </p>
         </div>
       </section>
@@ -267,22 +272,22 @@
       <section id="example2">
         <h2>How to send to a stealth meta-address?</h2>
         <div>
-          <p>In order to send fund to someone's stealth address you need the recipient's <span style="font-weight: bold;">stealth meta-address</span>. Using the stealth meta-address of the recipient, one can derive the information necessary to perform the stealth transaction. </p>
+          <p>In order to send funds to someone's stealth address you need the recipient's <span style="font-weight: bold;">stealth meta-address</span>. Using the stealth meta-address of the recipient, one can derive the information necessary to perform the stealth transaction. </p>
           <p>Let's go trough a quick example of how the final stealth address is derived. <br> We have Alice, who wants to send funds to the stealth address of Bob. </p>
           <ul>
-            <li>Alice take the stealth meta-address of Bob and inputs it into some ERC-5564 compatible interface.</li>
-            <li>The interface takes the stealth meta-address, generates a random number and, after some ellipic curve operations, returns the stealth address of the recipient together with a `Announcement`.</li>
+            <li><strong>Alice</strong> takes the <strong>stealth meta-address</strong> of Bob and inputs it into some <strong>ERC-5564 compatible interface</strong>.</li>
+            <li>The interface takes the stealth meta-address, generates a random number and, after some <strong>elliptic curve operations</strong>, returns the <strong>stealth address</strong> of the recipient together with an <strong>announcement</strong>.</li>
             <li>Alice can then send funds to the derived stealth address and publish the additional information retrieved. After that, she can be sure that Bob has every required information to find the stealth address and access it. All of this can be done in the background, hidden from the user, giving the user the feeling of sending to a stealth meta-address using a single transaction.</li>
-            <li>The announcement is published so that Bob can use it to find the stealth address Alice sent to and then derive the private key that controlls that address. </li>
-            <li>The View Tag will allow Bob to speed up the parsing process to find his stealth address and will be included in the metadata field.
+            <li>The <strong>announcement</strong> is published so that Bob can use it to find the stealth address Alice sent to and then derive the private key that controls that address. </li>
+            <li>The <strong>View Tag</strong> will allow Bob to speed up the parsing process to find his stealth address and will be included in the metadata field.
           </ul>
         </div>
         <p>You can try it out here. Input a stealth meta-address and get all the info necessary to then execute a transaction.</p>
         <form id="input-form-2">
-          <input style="width:70%;max-width:1000px;" placeholder="st:eth:0x..." type="text" id="stealthaddress">
+          <input style="width:90%;max-width:1000px;" placeholder="st:eth:0x..." type="text" id="stealthaddress">
           <button type="submit">Get Info</button>
         </form>
-        <textarea id="stealthaddressinfo" rows="3" style="width:70%;max-width:1000px;display:none"></textarea>
+        <textarea id="stealthaddressinfo" rows="3" style="width:90%;max-width:1000px;display:none"></textarea>
         <p>Head over to Etherscan and use the contract on <a target="_blank" href=https://sepolia.etherscan.io/address/0xb193dE1071fc1AF3FF1DF4c6d5091284274519EF#writeContract>this</a> address to send ETH and publish the announcement. The view tag is included in the metadata. <br> The contract simply emits an Announcement event, every time the `announce` function is executed. </p>
         <p>⚠️ Only try it on the Sepolia testnet ⚠️</p>
       </section>
