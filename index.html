@@ -17,14 +17,19 @@
     <meta name="keywords" content="Ethereum, Stealth Addresses, Privacy, EIP-5564">
     <meta name="author" content="Toni Wahrstätter">
     <style>
+
+    * {
+      transition-duration: 0.1s;
+
+    }
       body {
         font-family: Arial, sans-serif;
-        color: #333;
+        color: #222222;
         background-color: #f8f8f8;
       }
 
       header {
-        background-color: #333;
+        background-color: #222222;
         color: #fff;
         padding: 20px;
       }
@@ -34,6 +39,41 @@
         justify-content: center;
         margin-top: 10px;
       }
+
+      .light-mode {
+           background-color: #f8f8f8;
+           color: #222222;
+       }
+
+       .dark-mode {
+           background-color: #222222;
+           color: #ffffff;
+       }
+
+       .hacker-mode {
+           background-color: #0f0f0f;
+           color: #00ff00;
+           font-family: 'Courier New', monospace;
+           transition-duration: 1s;
+       }
+
+       .header-content {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
+
+       .toggle-btn {
+           padding: 0.5rem 1rem;
+           border: none;
+           border-radius: 0.25rem;
+           cursor: pointer;
+           transition: background-color 0.25s ease;
+       }
+
+       .toggle-btn:hover {
+           background-color: rgba(128, 128, 128, 0.25);
+       }
 
 
 
@@ -69,7 +109,7 @@
         font-weight: bold;
         font-size: 18px;
         margin-bottom: 6px;
-        color: #333;
+        color: #222222;
       }
 
       dd {
@@ -80,6 +120,73 @@
       button {
         font-size: 13px;
       }
+
+      a {
+          color: #2d92ff;
+      }
+
+      /* Active state */
+      a:active {
+          color: #0d6efd;
+      }
+
+      /* Visited state */
+      a:visited {
+          color: #ff27f1;
+      }
+
+      a:hover {
+        color: #2d92ff;
+      }
+
+      body.light-mode * > a {
+          color: #0056b3;
+      }
+
+      body.light-mode * > a:hover  {
+          color: #ff27f1;
+      }
+
+      body.light-mode * > .faq-item {
+          background-color: #ffffff;
+          color:  #222222;
+      }
+
+      body.light-mode * > .faq-section {
+          background-color: #f8f8f8;
+      }
+
+      body.dark-mode * > .faq-item {
+          background-color: #222222;
+          color: #ffffff;
+      }
+
+      body.dark-mode * > .faq-item > * {
+          background-color: #222222;
+          color: #ffffff;
+      }
+
+      body.dark-mode * > .faq-section {
+          background-color: #222222;
+      }
+
+      body.hacker-mode * > .faq-item {
+        background-color: #0f0f0f;
+        color: #00ff00;
+        font-family: 'Courier New', monospace;
+      }
+
+      body.hacker-mode * > .faq-item > * {
+        background-color: #0f0f0f;
+        color: #00ff00;
+        font-family: 'Courier New', monospace;
+      }
+
+      body.hacker-mode * > .faq-section {
+          background-color: #0f0f0f;
+      }
+
+
 
       /* Media query for smaller screens */
       @media only screen and (max-width: 600px) {
@@ -98,9 +205,16 @@
       }
     </style>
   </head>
-  <body>
+  <body class="light-mode">
     <header>
-      <h1>Stealth Addresses - ERC-5564/6538</h1>
+      <div class="header-content">
+        <h1>ERC-5564 - Stealth Addresses</h1>
+        <div>
+              <button class="toggle-btn" onclick="changeTheme('light-mode')">Light Mode</button>
+              <button class="toggle-btn" onclick="changeTheme('dark-mode')">Dark Mode</button>
+              <button class="toggle-btn" onclick="changeTheme('hacker-mode')">90s' Hacker Mode</button>
+          </div>
+      </div>
     </header>
     <main>
       <section id="introduction">
@@ -239,7 +353,9 @@
             </div>
             <div class="faq-item">
               <dt>What is ERC-5564 and ERC-6538?</dt>
-              <dd>Stealth Addresses have been known for more than 10 years now, however, without agreeing on a standardized way to used them, we cannot leverage the small, but for some use cases, sufficient privacy gains that stealth addresses offer. In essence, ERC-5564 serves to standardize the Messenger contract, which is necessary to trigger the event that provides recipients with the information needed to locate their stealth addresses (through parsing). By having a central place to "subscribe" to in order to stay up-to-date with incoming stealth transactions, users can safely engage in such transactions, knowing that the recipient doesn't have to experiment with different cryptographic methods to derive the final stealth address. While ERC-5564 establishes the basic framework for stealth addresses, it also enables the implementation of specific stealth address methods that use different cryptographic schemes, such as secp256k1, to build upon this foundation and take advantage of the standardized Messenger contract. <br>ERC-6538 represents the Registry Contract that serves as a central place for users to store and publish their stealth meta-addresses. Furhtermore, the registry's goal is to enable smart contracts access to users' stealth meta-addresses in programmatic manners. </dd>
+              <dd>
+                <strong>Stealth Addresses</strong> have been known for more than <strong>10 years</strong> now, however, without agreeing on a <strong>standardized way</strong> to use them, we cannot leverage the small, but for some use cases, sufficient privacy gains that stealth addresses offer. In essence, <strong>ERC-5564</strong> serves to standardize the <strong>Messenger contract</strong>, which is necessary to trigger the event that provides recipients with the information needed to locate their stealth addresses (through parsing). By having a central place to "subscribe" to in order to stay up-to-date with incoming stealth transactions, users can safely engage in such transactions, knowing that the recipient doesn't have to experiment with different cryptographic methods to derive the final stealth address. While ERC-5564 establishes the basic framework for stealth addresses, it also enables the implementation of specific stealth address methods that use different <strong>cryptographic schemes</strong>, such as <strong>secp256k1</strong>, to build upon this foundation and take advantage of the standardized Messenger contract. <br><strong>ERC-6538</strong> represents the <strong>Registry Contract</strong> that serves as a central place for users to store and publish their <strong>stealth meta-addresses</strong>. Furthermore, the registry's goal is to enable smart contracts access to users' stealth meta-addresses in programmatic manners.
+              </dd>
             </div>
             <div class="faq-item">
               <dt>What is there to be standardized?</dt> Stealth addresses require senders to be sure that recipients are aware of the cryptographic scheme being used so that they can ultimately locate their own stealth addresses. By generalizing stealth addresses and providing different stealth address implementations (that use different cryptographic schemes) a central place to publish the information required by recipients to located their stealth addresses, ERC-5564 acts as a basis-framework for all sorts of cryptographic schemes that allow stealth addresses.
@@ -285,6 +401,20 @@
         document.execCommand("copy");
         document.querySelector("#copybutton").innerText = "Copied!"
       }
+
+      function changeTheme(theme) {
+            document.body.className = theme;
+            if (theme === "light-mode") {
+              document.querySelector("body > header").className= "dark-mode";
+            }
+            if (theme === "hacker-mode") {
+              document.querySelector("body > header").className= "hacker-mode";
+            }
+            if (theme === "dark-mode") {
+              document.querySelector("body > header").className= "dark-mode";
+            }
+
+        }
 
 
 

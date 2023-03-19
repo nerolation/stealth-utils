@@ -61,7 +61,8 @@ global.parseStealthAddresses = function parseStealthAddresses(
   ephemeralPublicKey_hex,
   stealthAddress_given,
   spendingPublicKey_hex,
-  viewingPrivateKey
+  viewingPrivateKey,
+  viewTag_given
 ){
   //console.log("ephemeralPublicKey_hex :",ephemeralPublicKey_hex);
 
@@ -78,8 +79,13 @@ global.parseStealthAddresses = function parseStealthAddresses(
   var hashedSharedSecret = keccak256(Buffer.from(sharedSecret.slice(2)));
   //console.log("hashedSharedSecret2 :",hashedSharedSecret);
 
-  var ViewTag = hashedSharedSecret.slice(0,2);
-  ////console.log('View tag:', ViewTag.toString('hex'));
+  var ViewTag = hashedSharedSecret.slice(0,2).toString('hex');
+  console.log('View tag:', ViewTag);
+  console.log('View tag given:', viewTag_given);
+  if (viewTag_given != ViewTag) {
+    console.log("skipped thanks to view tag;")
+    return false;
+  }
 
   const hashedSharedSecretPoint = secp.Point.fromPrivateKey(Buffer.from(hashedSharedSecret, "hex"));
   //console.log('hashedSharedSecretPoint1:', hashedSharedSecretPoint);
