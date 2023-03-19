@@ -193,19 +193,28 @@
       /* Media query for smaller screens */
       @media only screen and (max-width: 600px) {
         dt {
-          font-size: 14px;
+          font-size: 16px;
           margin-bottom: 8px;
         }
 
         dd {
-          font-size: 12px;
+          font-size: 14px;
         }
 
         button {
           font-size: 18px;
         }
+        .mode{
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
         input{
-          font-size: 20px;
+          font-size: 18px;
+        }
+        textarea{
+          white-space: pre-wrap;
+          height: 10vh;
+          max-height: 20vh;
         }
       }
     </style>
@@ -215,9 +224,9 @@
       <div class="header-content">
         <h1>ERC-5564 - Stealth Addresses</h1>
         <div>
-              <button class="toggle-btn" onclick="changeTheme('light-mode')">Light Mode</button>
-              <button class="toggle-btn" onclick="changeTheme('dark-mode')">Dark Mode</button>
-              <button class="toggle-btn" onclick="changeTheme('hacker-mode')">90s' Hacker Mode</button>
+              <button class="toggle-btn mode" onclick="changeTheme('light-mode')">Light Mode</button>
+              <button class="toggle-btn mode" onclick="changeTheme('dark-mode')">Dark Mode</button>
+              <button class="toggle-btn mode" onclick="changeTheme('hacker-mode')">90s' Hacker Mode</button>
           </div>
       </div>
     </header>
@@ -474,12 +483,24 @@
         });
         document.querySelector('#input-form-2').addEventListener('submit', function(e) {
           e.preventDefault();
-          var inputField = document.querySelector('#stealthaddress');
-          var stealthAddressInfo = generateStealthInfo(inputField.value);
-          console.log("-");
+          var inputField = document.querySelector('#stealthaddress').value;
           var outputField = document.querySelector('#stealthaddressinfo');
+          if (!(inputField.startsWith("st:eth:0x")) || (inputField.length != 141)) {
+            outputField.value = "Input a valid stealth meta-address starting with st:eth:0x;";
+          }
+          else {
+            try {
+              var stealthAddressInfo = generateStealthInfo(inputField);
+              outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] + "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nMetadata: " + stealthAddressInfo["ViewTag"];
+
+            } catch (error) {
+              outputField.value = "Error occured: " + error;
+            }
+          }
+
+
           outputField.style.display = "block";
-          outputField.value = "Stealth Address: " + stealthAddressInfo["stealthAddress"] + "\nAnnouncement: " + stealthAddressInfo["ephemeralPublicKey"] + "\nMetadata: " + stealthAddressInfo["ViewTag"];
+
         });
         document.querySelector('#input-form-3').addEventListener('submit', function(e) {
           e.preventDefault();
