@@ -80,10 +80,10 @@ global.parseStealthAddresses = function parseStealthAddresses(
   //console.log("hashedSharedSecret2 :",hashedSharedSecret);
 
   var ViewTag = hashedSharedSecret.slice(0,2).toString('hex');
-  console.log('View tag:', ViewTag);
-  console.log('View tag given:', viewTag_given);
+  //console.log('View tag:', ViewTag);
+  //console.log('View tag given:', viewTag_given);
   if (viewTag_given != ViewTag) {
-    console.log("skipped thanks to view tag;")
+    //console.log("skipped thanks to view tag;")
     return false;
   }
 
