@@ -17,6 +17,12 @@
     <meta name="keywords" content="Ethereum, Stealth Addresses, Privacy, EIP-5564">
     <meta name="author" content="Toni Wahrstätter">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+
+
 
     <style>
 
@@ -221,19 +227,24 @@
   </head>
   <body class="light-mode">
     <header>
+    
+    <div class="container">
       <div class="header-content">
-        <h1>ERC-5564 - Stealth Addresses</h1>
-        <div>
-              <button class="toggle-btn mode" onclick="changeTheme('light-mode')">Light Mode</button>
-              <button class="toggle-btn mode" onclick="changeTheme('dark-mode')">Dark Mode</button>
-              <button class="toggle-btn mode" onclick="changeTheme('hacker-mode')">90s' Hacker Mode</button>
-          </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="header-content">
+        <h1 class="display-4">ERC-5564 - Stealth Addresses</h1>
+        <nav>
+          <button class="toggle-btn btn btn-light">Light Mode</button>
+          <button class="toggle-btn btn btn-dark">Dark Mode</button>
+          <button class="toggle-btn btn btn-success">Hacker Mode</button>
+        </nav>
       </div>
+    </div>
     </header>
     <main>
       <section id="introduction">
         <h2>Introduction</h2>
-        <p>
+        <p class="lead">
           <strong>Stealth addresses</strong> are a way of protecting the <strong>privacy of recipients</strong> in cryptocurrency transactions. <br>They allow a sender to <strong>non-interactively</strong> generate a new address for the recipient, making it look like as if the sender interacted with some random account.
         </p>
         <p>
@@ -588,5 +599,9 @@
         });
       });
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
   </body>
 </html>
